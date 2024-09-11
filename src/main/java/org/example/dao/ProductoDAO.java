@@ -1,8 +1,7 @@
 package org.example.dao;
 
-import org.example.entidades.Producto;
-import java.util.List;
+import java.sql.SQLException;
 
 public interface ProductoDAO {
-    void insertProducto(Producto producto);
+    void insertProducto(int idProducto, String nombre, double valor) throws SQLException;
 }

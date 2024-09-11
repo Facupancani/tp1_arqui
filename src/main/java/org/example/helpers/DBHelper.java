@@ -1,11 +1,19 @@
 package org.example.helpers;
 
-import org.example.dao.SingletonDB;
+import org.example.dao.*;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import java.io.FileReader;
+
 
 public class DBHelper {
 
-    public void crearTablas() throws SQLException{
+    public static void crearTablas() throws SQLException{
 
         Connection conn = SingletonDB.getConnection();
 
@@ -41,6 +49,41 @@ public class DBHelper {
         conn.prepareStatement(crearTablaProducto).execute();
         conn.prepareStatement(crearTablaFacturaProducto).execute();
         conn.commit();
+
+    }
+
+    public static void populateTables() {
+
+        ClienteDAOMysql clienteDAO = new ClienteDAOMysql();
+        FacturaDAOMysql facturaDAO = new FacturaDAOMysql();
+        ProductoDAOMysql productoDAO = new ProductoDAOMysql();
+        FacturaProductoDAOMysql facturaProductoDAO = new FacturaProductoDAOMysql();
+
+        try{
+
+            CSVParser parserCliente = CSVFormat.DEFAULT.withHeader().parse(new FileReader("src/main/resources/clientes.csv"));
+            for(CSVRecord row : parserCliente){
+                clienteDAO.insertCliente(Integer.parseInt(row.get("idCliente")), row.get("nombre"), row.get("email"));
+            }
+
+            CSVParser parserFactura = CSVFormat.DEFAULT.withHeader().parse(new FileReader("src/main/resources/facturas.csv"));
+            for(CSVRecord row : parserFactura){
+                facturaDAO.insertFactura(Integer.parseInt(row.get("idFactura")), Integer.parseInt(row.get("idCliente")));
+            }
+
+            CSVParser parserProducto = CSVFormat.DEFAULT.withHeader().parse(new FileReader("src/main/resources/productos.csv"));
+            for(CSVRecord row : parserProducto){
+                productoDAO.insertProducto(Integer.parseInt(row.get("idProducto")), row.get("nombre"), Double.parseDouble(row.get("valor")));
+            }
+
+            CSVParser parserFacturaProducto = CSVFormat.DEFAULT.withHeader().parse(new FileReader("src/main/resources/facturas_productos.csv"));
+            for(CSVRecord row : parserFacturaProducto){
+                facturaProductoDAO.insertFacturaProducto(Integer.parseInt(row.get("idFactura")), Integer.parseInt(row.get("idProducto")), Integer.parseInt(row.get("cantidad")));
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

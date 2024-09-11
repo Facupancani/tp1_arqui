@@ -43,7 +43,7 @@ public class ClienteDAOMysql implements ClienteDAO {
         "ORDER BY facturado DESC";
 
         ResultSet rs = this.conn.prepareStatement(query).executeQuery();
-        List<Cliente> clientes = new ArrayList<>();
+
         while (rs.next()){
             System.out.println("id: "+rs.getInt("idCliente")+", nombre: "+rs.getString("nombre")+ ", email: "+rs.getString("email")+", recaudado: "+rs.getString("recaudado"));
         }
