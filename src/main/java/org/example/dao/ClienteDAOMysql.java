@@ -34,18 +34,18 @@ public class ClienteDAOMysql implements ClienteDAO {
     @Override
     public void getPorFacturados() throws SQLException {
 
-        String query = "SELECT c.idCliente, c.nombre, c.email, SUM(p.valor * fp.cantidad as facturado"+
-        "FROM cliente c"+
-        "JOIN factura f ON c.idCliente = f.idCliente"+
-        "JOIN factura_producto fp ON f.idFactura = fp.idFactura"+
-        "JOIN producto p ON fp.idProducto = p.idProducto"+
-        "GROUP BY c.idCliente"+
-        "ORDER BY facturado DESC";
+        String query = "SELECT c.idCliente, c.nombre, c.email, SUM(p.valor * fp.cantidad) as facturado "+
+        "FROM cliente c "+
+        "JOIN factura f ON c.idCliente = f.idCliente " +
+        "JOIN factura_producto fp ON f.idFactura = fp.idFactura "+
+        "JOIN producto p ON fp.idProducto = p.idProducto "+
+        "GROUP BY c.idCliente "+
+        "ORDER BY facturado DESC ";
 
         ResultSet rs = this.conn.prepareStatement(query).executeQuery();
 
         while (rs.next()){
-            System.out.println("id: "+rs.getInt("idCliente")+", nombre: "+rs.getString("nombre")+ ", email: "+rs.getString("email")+", recaudado: "+rs.getString("recaudado"));
+            System.out.println("id: "+rs.getInt("idCliente")+", nombre: "+rs.getString("nombre")+ ", email: "+rs.getString("email")+", facturado: "+rs.getString("facturado"));
         }
 
     }

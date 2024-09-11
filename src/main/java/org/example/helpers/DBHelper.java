@@ -87,4 +87,23 @@ public class DBHelper {
 
     }
 
+    public static void dropTables() throws SQLException{
+
+        Connection conn = SingletonDB.getConnection();
+        conn.setAutoCommit(false);
+
+        String dropTablaFacturaProducto = "DROP TABLE IF EXISTS factura_producto";
+        String dropTablaProducto = "DROP TABLE IF EXISTS producto";
+        String dropTablaFactura = "DROP TABLE IF EXISTS factura";
+        String dropTablaCliente = "DROP TABLE IF EXISTS cliente";
+
+        conn.prepareStatement(dropTablaFacturaProducto).execute();
+        conn.prepareStatement(dropTablaProducto).execute();
+        conn.prepareStatement(dropTablaFactura).execute();
+        conn.prepareStatement(dropTablaCliente).execute();
+        conn.commit();
+
+    }
+
+
 }

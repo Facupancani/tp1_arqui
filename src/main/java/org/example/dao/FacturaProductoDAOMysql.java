@@ -26,6 +26,5 @@ public class FacturaProductoDAOMysql implements FacturaProductoDAO{
         ps.executeUpdate();
         this.conn.commit();
         ps.close();
-        ps.close();
     }
 }
