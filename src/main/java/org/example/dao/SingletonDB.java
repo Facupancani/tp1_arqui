@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class SingletonDB {
 
-    private static final String URI = "jdbc:mysql://localhost:3306/arquidb";
+    private static final String URI = "jdbc:mysql://localhost:3306/integrador1";
     private static final String USER = "root";
     private static final String PASSWORD = "";
     private static Connection conn;

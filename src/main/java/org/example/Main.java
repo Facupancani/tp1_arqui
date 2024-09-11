@@ -3,7 +3,6 @@ package org.example;
 import org.example.dao.ClienteDAOMysql;
 import org.example.dao.ProductoDAOMysql;
 import org.example.helpers.DBHelper;
-import java.sql.SQLException;
 
 public class Main {
 
@@ -11,20 +10,19 @@ public class Main {
 
         try{
 
-            System.out.println("Dropeando tablas..");
+            System.out.println("[+] Rolling back tables..");
             DBHelper.dropTables();
-            System.out.println("Creando tablas..");
             DBHelper.crearTablas();
-            System.out.println("Cargando tablas..");
+            System.out.println("[+] Populating data from CSV...");
             DBHelper.populateTables();
-            System.out.println("Tablas cargadas exitosamente! \n");
+            System.out.println("[+] OK!");
 
-            System.out.printf("Lista de clientes ordenada por mas facturados: \n");
+            System.out.println("\n============================================================\n");
             ClienteDAOMysql clienteDAO = new ClienteDAOMysql();
             clienteDAO.getPorFacturados();
-            System.out.printf("  Fin de la lista. \n");
+            System.out.println("\n============================================================\n");
 
-
+            System.out.println("[+] Most Billed: \n");
             ProductoDAOMysql productoDAO = new ProductoDAOMysql();
             productoDAO.getMasFacturado();
 
