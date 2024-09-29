@@ -92,4 +92,17 @@ public class Estudiante {
     public void setCiudadResidencia(String ciudadResidencia) {
         this.ciudadResidencia = ciudadResidencia;
     }
+
+    public String toString() {
+        return "Estudiante{" +
+                "nroLibreta='" + nroLibreta + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", edad=" + edad +
+                ", genero='" + genero + '\'' +
+                ", ciudadResidencia='" + ciudadResidencia + '\'' +
+                ", nroDocumento='" + nroDocumento + '\'' +
+                '}';
+    }
+
 }

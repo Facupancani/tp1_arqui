@@ -19,6 +19,10 @@ public class CarreraDao {
         em.getTransaction().commit();
     }
 
+    public Carrera find(int id) {
+        return em.find(Carrera.class, id);
+    }
+
     public List<Carrera> findAll(){
         return em.createQuery("SELECT c FROM Carrera c", Carrera.class).getResultList();
     }

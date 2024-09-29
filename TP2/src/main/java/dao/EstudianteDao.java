@@ -20,6 +20,10 @@ public class EstudianteDao {
         em.getTransaction().commit();
     }
 
+    public Estudiante find(int nroLibreta) {
+        return em.find(Estudiante.class, nroLibreta);
+    }
+
     public List<Estudiante> findAll(){
         TypedQuery<Estudiante> query = em.createQuery("SELECT e FROM Estudiante e", Estudiante.class);
         return query.getResultList();
