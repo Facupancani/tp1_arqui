@@ -1,0 +1,14 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.1">
+    <persistence-unit name="registroEstudiantes">
+        <class>com.registro.estudiantes.entity.Estudiante</class>
+        <class>com.registro.estudiantes.entity.Carrera</class>
+        <class>com.registro.estudiantes.entity.Inscripcion</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:arquiDB;create=true"/>
+            <property name="javax.persistence.jdbc.user" value=""/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+        </properties>
+    </persistence-unit>
+</persistence>
