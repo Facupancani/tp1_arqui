@@ -10,7 +10,7 @@ public class Carrera {
     private int id;
     @Column
     private String nombre;
-    @OneToMany(mappedBy = "carrera")
+    @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL)
     private List<Inscripcion> inscripciones;
 
     public Carrera(int id, String nombre){
