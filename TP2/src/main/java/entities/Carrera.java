@@ -1,26 +1,33 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Carrera {
 
     @Id
-    private int id;
+    private int idCarrera;
+
     @Column
     private String nombre;
+
     @Column
     int duracion;
+
     @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL)
     private List<Inscripcion> inscripciones;
 
-    public Carrera () {}
+    public Carrera () {
+        this.inscripciones = new ArrayList<>();
+    }
 
-    public Carrera(int id, String nombre,int duracion){
-        this.id = id;
+    public Carrera(int idCarrera, String nombre,int duracion){
+        this.idCarrera = idCarrera;
         this.nombre = nombre;
         this.duracion=duracion;
+        this.inscripciones = new ArrayList<>();
     }
 
     public int getDuracion() {
@@ -32,11 +39,11 @@ public class Carrera {
     }
 
     public int getId() {
-        return id;
+        return idCarrera;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.idCarrera = id;
     }
 
     public String getNombre() {
@@ -50,7 +57,7 @@ public class Carrera {
     @Override
     public String toString() {
         return "Carrera{" +
-                "id=" + id +
+                "idCarrera=" + idCarrera +
                 ", nombre='" + nombre + '\'' +
                 ", inscripciones=" + (inscripciones != null ? inscripciones.size() : 0) +
                 '}';

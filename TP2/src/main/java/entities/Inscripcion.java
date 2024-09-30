@@ -9,39 +9,31 @@ public class Inscripcion {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="nroDocumento",nullable=false)
+    @JoinColumn(name="nroDocumento")
     private Estudiante estudiante;
 
     @ManyToOne
-    @JoinColumn(name="id_carrera")
+    @JoinColumn(name="idCarrera")
     private Carrera carrera;
+
     @Column
-    private String inscripcion;
-    @Column(nullable=false)
-    private int graduacion;
-    @Column(nullable=false)
+    private int anioInscripcion;
+
+    @Column()
+    private int anioGraduacion;
+
+    @Column()
     private int antiguedad;
 
     public Inscripcion () {}
 
-    public Inscripcion(int id, Estudiante estudiante, Carrera carrera,String inscripcion, int graduacion, int antiguedad) {
-        this.id=id;
+    public Inscripcion(int id, Estudiante estudiante, Carrera carrera, int anioInscripcion, int anioGraduacion, int antiguedad) {
+        this.id = id;
         this.estudiante = estudiante;
         this.carrera = carrera;
-        this.inscripcion=inscripcion;
-        this.graduacion=graduacion;
-        this.antiguedad=antiguedad;
-    }
-
-    @Override
-    public String toString() {
-        return "Inscripcion{" +
-                "id=" + id +
-                ", estudiante=" + (estudiante != null ? estudiante.getNroLibreta() : "null") +
-                ", carrera=" + (carrera != null ? carrera.getNombre() : "null") +
-                ", Graduacion=" + graduacion +
-                ", Antiguedad=" + antiguedad +
-                '}';
+        this.anioInscripcion = anioInscripcion;
+        this.anioGraduacion = anioGraduacion;
+        this.antiguedad = antiguedad;
     }
 
     public int getId() {
@@ -68,20 +60,20 @@ public class Inscripcion {
         this.carrera = carrera;
     }
 
-    public String getInscripcion() {
-        return inscripcion;
+    public int getAnioInscripcion() {
+        return anioInscripcion;
     }
 
-    public void setInscripcion(String inscripcion) {
-        this.inscripcion = inscripcion;
+    public void setAnioInscripcion(int anioInscripcion) {
+        this.anioInscripcion = anioInscripcion;
     }
 
-    public int getGraduacion() {
-        return graduacion;
+    public int getAnioGraduacion() {
+        return anioGraduacion;
     }
 
-    public void setGraduacion(int graduacion) {
-        this.graduacion = graduacion;
+    public void setAnioGraduacion(int anioGraduacion) {
+        this.anioGraduacion = anioGraduacion;
     }
 
     public int getAntiguedad() {
@@ -91,4 +83,17 @@ public class Inscripcion {
     public void setAntiguedad(int antiguedad) {
         this.antiguedad = antiguedad;
     }
+
+    @Override
+    public String toString() {
+        return "Inscripcion{" +
+                "id=" + id +
+                ", estudiante=" + estudiante +
+                ", carrera=" + carrera +
+                ", anioInscripcion=" + anioInscripcion +
+                ", anioGraduacion=" + anioGraduacion +
+                ", antiguedad=" + antiguedad +
+                '}';
+    }
+
 }

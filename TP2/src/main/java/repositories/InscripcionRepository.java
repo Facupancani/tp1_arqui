@@ -5,23 +5,30 @@ import entities.Inscripcion;
 import javax.persistence.EntityManager;
 
 public class InscripcionRepository implements Repository<Inscripcion> {
+
+    private EntityManager em;
+
+    public InscripcionRepository(EntityManager em){
+        this.em = em;
+    }
+
     @Override
-    public void insert(EntityManager em, Inscripcion obj) {
+    public void insert(Inscripcion obj) {
+        em.persist(obj);
+    }
+
+    @Override
+    public void update(Inscripcion obj) {
 
     }
 
     @Override
-    public void update(EntityManager em, Inscripcion obj) {
+    public void delete(int id) {
 
     }
 
     @Override
-    public void delete(EntityManager em, int id) {
-
-    }
-
-    @Override
-    public Inscripcion findById(EntityManager em, int id) {
-        return null;
+    public Inscripcion findById(int id) {
+        return em.find(Inscripcion.class, id);
     }
 }

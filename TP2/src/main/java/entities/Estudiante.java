@@ -8,41 +8,50 @@ import java.util.List;
 public class Estudiante {
 
     @Id
-    private int nroLibreta;
+    private int nroDocumento;
+
     @Column
     private String nombre;
+
     @Column
     private String apellido;
+
     @Column
     private int edad;
+
     @Column
     private String genero;
-    @Column
-    private int nroDocumento;
+
     @Column
     private String ciudadResidencia;
+
+    @Column
+    private int nroLibreta;
+
     @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
     private List<Inscripcion> inscripciones;
 
-    public Estudiante() {}
+    public Estudiante() {
+        this.inscripciones = new ArrayList<>();
+    }
 
-    public Estudiante(int nroLibreta, String nombre, String apellido, int edad, String genero, int nroDocumento, String ciudad) {
-        this.nroLibreta = nroLibreta;
+    public Estudiante(int nroDocumento, String nombre, String apellido, int edad, String genero, String ciudadResidencia, int nroLibreta) {
+        this.nroDocumento = nroDocumento;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.genero = genero;
-        this.nroDocumento = nroDocumento;
-        this.ciudadResidencia = ciudad;
-        this.inscripciones=new ArrayList<>();
-    }
-
-    public int getNroLibreta() {
-        return nroLibreta;
-    }
-
-    public void setNroLibreta(int nroLibreta) {
+        this.ciudadResidencia = ciudadResidencia;
         this.nroLibreta = nroLibreta;
+        this.inscripciones = new ArrayList<>();
+    }
+
+    public int getNroDocumento() {
+        return nroDocumento;
+    }
+
+    public void setNroDocumento(int nroDocumento) {
+        this.nroDocumento = nroDocumento;
     }
 
     public String getNombre() {
@@ -77,14 +86,6 @@ public class Estudiante {
         this.genero = genero;
     }
 
-    public int getNroDocumento() {
-        return nroDocumento;
-    }
-
-    public void setNroDocumento(int nroDocumento) {
-        this.nroDocumento = nroDocumento;
-    }
-
     public String getCiudadResidencia() {
         return ciudadResidencia;
     }
@@ -93,15 +94,24 @@ public class Estudiante {
         this.ciudadResidencia = ciudadResidencia;
     }
 
+    public int getNroLibreta() {
+        return nroLibreta;
+    }
+
+    public void setNroLibreta(int nroLibreta) {
+        this.nroLibreta = nroLibreta;
+    }
+
+    @Override
     public String toString() {
         return "Estudiante{" +
-                "nroLibreta='" + nroLibreta + '\'' +
+                ", nroDocumento=" + nroDocumento +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", edad=" + edad +
                 ", genero='" + genero + '\'' +
                 ", ciudadResidencia='" + ciudadResidencia + '\'' +
-                ", nroDocumento='" + nroDocumento + '\'' +
+                ", nroLibreta=" + nroLibreta +
                 '}';
     }
 
