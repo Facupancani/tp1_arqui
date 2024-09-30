@@ -20,8 +20,10 @@ public class EstudianteDao {
         em.getTransaction().commit();
     }
 
-    public Estudiante find(int nroLibreta) {
-        return em.find(Estudiante.class, nroLibreta);
+    public Estudiante findByDocumento(int nroDocumento) {
+        TypedQuery<Estudiante> query = em.createQuery("SELECT e FROM Estudiante e WHERE e.nroDocumento = :nroDocumento", Estudiante.class);
+        query.setParameter("nroDocumento", nroDocumento);
+        return query.getSingleResult();
     }
 
     public List<Estudiante> findAll(){

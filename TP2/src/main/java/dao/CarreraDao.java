@@ -1,6 +1,8 @@
 package dao;
 
 import entities.Carrera;
+import entities.Estudiante;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -20,7 +22,9 @@ public class CarreraDao {
     }
 
     public Carrera find(int id) {
-        return em.find(Carrera.class, id);
+        TypedQuery<Carrera> query = em.createQuery("SELECT c FROM Carrera c WHERE c.id = :id", Carrera.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
     }
 
     public List<Carrera> findAll(){

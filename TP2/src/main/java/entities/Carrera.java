@@ -10,14 +10,25 @@ public class Carrera {
     private int id;
     @Column
     private String nombre;
+    @Column
+    int duracion;
     @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL)
     private List<Inscripcion> inscripciones;
 
     public Carrera () {}
 
-    public Carrera(int id, String nombre){
+    public Carrera(int id, String nombre,int duracion){
         this.id = id;
         this.nombre = nombre;
+        this.duracion=duracion;
+    }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
     }
 
     public int getId() {
