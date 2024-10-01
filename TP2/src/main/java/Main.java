@@ -24,8 +24,8 @@ public class Main {
         InscripcionRepository inscripcionRepository = new InscripcionRepository(em);
 
         // creo el helper y cargo las tables
-        //Helper helper = new Helper(em, carreraRepository, estudianteRepository, inscripcionRepository);
-        //helper.populateTables();
+        Helper helper = new Helper(em, carreraRepository, estudianteRepository, inscripcionRepository);
+        helper.populateTables();
 
         System.out.println("\n========================================================\n");
         System.out.println("Estudiante repo:" + estudianteRepository.findAll());

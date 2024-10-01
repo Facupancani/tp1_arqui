@@ -25,7 +25,7 @@ public class CarreraRepository implements Repository<Carrera> {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            em.persist(obj);
+            em.merge(obj);
             transaction.commit();
         } catch (PersistenceException e) {
             transaction.rollback();
