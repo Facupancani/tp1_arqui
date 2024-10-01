@@ -38,6 +38,31 @@ public class Helper {
         this.populateInscripciones();
     }
 
+    public void dropTables() {
+        try {
+            em.getTransaction().begin();
+
+            // Elimina la tabla Inscripcion primero (si depende de Estudiante o Carrera)
+            em.createNativeQuery("DROP TABLE IF EXISTS Inscripcion CASCADE").executeUpdate();
+
+            // Elimina la tabla Estudiante
+            em.createNativeQuery("DROP TABLE IF EXISTS Estudiante CASCADE").executeUpdate();
+
+            // Elimina la tabla Carrera
+            em.createNativeQuery("DROP TABLE IF EXISTS Carrera CASCADE").executeUpdate();
+
+            em.getTransaction().commit();
+            System.out.println("Tablas eliminadas exitosamente.");
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Error al eliminar las tablas: " + e.getMessage());
+        }
+    }
+
+
+
     private void populateCarrerasEstudiantes() {
 
         try {

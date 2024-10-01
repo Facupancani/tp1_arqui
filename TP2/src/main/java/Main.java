@@ -26,9 +26,10 @@ public class Main {
 
         // creo el helper y cargo las tables
         Helper helper = new Helper(em, carreraRepository, estudianteRepository, inscripcionRepository);
+        helper.dropTables();
         helper.populateTables();
 
-        /*
+
         System.out.println("\n========================================================\n");
         System.out.println("Estudiante repo:" + estudianteRepository.findAll());
         System.out.println("Carrera repo:" + carreraRepository.findAll());
@@ -40,8 +41,7 @@ public class Main {
         System.out.println("\n========================================================\n\n");
         System.out.println("Carreras con Estudiantes inscriptos: "+carreraRepository.findCarrerasConInscriptos());
         System.out.println("\n========================================================\n\n");
-     */
-        //unico metodo q no anda
+
         Carrera c = carreraRepository.findById(11);
         if (c == null) {
             System.out.println("No se encontró la carrera con ID 11.");
@@ -50,14 +50,14 @@ public class Main {
         }
 
 
-/*
+
 
         System.out.println("\n\n============================== [REPORTES] ==============================");
         List<ReporteDto> reportes = carreraRepository.generarReporte();
         for(ReporteDto reporte : reportes){
             System.out.println(reporte);
         }
-*/
+
         
         // cierro las conexiones a los entities managers
         em.close();
