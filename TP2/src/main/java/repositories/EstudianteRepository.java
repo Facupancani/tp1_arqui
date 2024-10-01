@@ -3,6 +3,8 @@ package repositories;
 import entities.Estudiante;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -16,7 +18,16 @@ public class EstudianteRepository implements Repository<Estudiante> {
 
     @Override
     public void insert(Estudiante obj) {
-        em.persist(obj);
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        try {
+            em.persist(obj);
+            transaction.commit();
+        } catch (PersistenceException e) {
+            transaction.rollback();
+            System.out.println("Error al insertar estudiante." + e.getMessage());
+            throw e;
+        }
     }
 
     @Override

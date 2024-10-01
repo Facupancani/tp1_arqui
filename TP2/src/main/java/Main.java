@@ -24,8 +24,11 @@ public class Main {
         Helper helper = new Helper(em, carreraRepository, estudianteRepository, inscripcionRepository);
         helper.populateTables();
 
-
-        System.out.println(estudianteRepository.findAll());
+        System.out.println("------------------");
+        System.out.println("------------------");
+        System.out.println("Estudiante repo:" + estudianteRepository.findAll());
+        System.out.println("Carrera repo:" + carreraRepository.findAll());
+        System.out.println("Inscripcion repo:" + inscripcionRepository.findAll());
 
         
         // cierro las conexiones a los entities managers
