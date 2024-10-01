@@ -104,20 +104,18 @@ public class EstudianteRepository implements Repository<Estudiante> {
 
     // ej 2g)
     // recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.
-    public List<Estudiante> findByCarreraCiudad(Carrera carrera, String ciudad){
-        /*String query = "SELECT e FROM Estudiante e " +
-                "JOIN eInscripcion i " +
-                "WHERE i.carrera.idCarrera = :idCarrera AND e.ciudadResidencia = :ciudadResidencia";*/
-
-        String query = "SELECT e FROM Inscripcion i " +
-                "JOIN i.estudiante e " +
+    public List<Estudiante> findByCarreraCiudad(Carrera carrera, String ciudad) {
+        String query = "SELECT e FROM Estudiante e " +
+                "JOIN e.inscripciones i " +
                 "WHERE i.carrera = :carrera AND e.ciudadResidencia = :ciudad";
 
-        Query q = em.createQuery(query, Estudiante.class);
+        Query q = em.createQuery(query);
         q.setParameter("carrera", carrera);
         q.setParameter("ciudad", ciudad);
+
         return q.getResultList();
     }
+
 
 
 

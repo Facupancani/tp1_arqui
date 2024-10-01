@@ -43,7 +43,12 @@ public class Main {
      */
         //unico metodo q no anda
         Carrera c = carreraRepository.findById(11);
-        System.out.println("Estudiantes de una carrera determinada: "+estudianteRepository.findByCarreraCiudad(c,"Melekeok"));
+        if (c == null) {
+            System.out.println("No se encontró la carrera con ID 11.");
+        } else {
+            System.out.println("Estudiantes de una carrera determinada: " + estudianteRepository.findByCarreraCiudad(c, "Melekeok Village"));
+        }
+
 
 /*
 
