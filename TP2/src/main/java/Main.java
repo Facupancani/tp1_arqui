@@ -32,7 +32,13 @@ public class Main {
         System.out.println("Carrera repo:" + carreraRepository.findAll());
         System.out.println("Inscripcion repo:" + inscripcionRepository.findAll());
         System.out.println("\n========================================================\n\n");
-
+        System.out.println("Estudiante por ID: "+ estudianteRepository.findById(33865264));
+        System.out.println("\n========================================================\n\n");
+        System.out.println("Estudiantes por Genero: "+estudianteRepository.findByGenero("Male"));
+        System.out.println("\n========================================================\n\n");
+        System.out.println("Carreras con Estudiantes inscriptos: "+carreraRepository.findCarrerasConInscriptos());
+        System.out.println("\n========================================================\n\n");
+        System.out.println("Estudiantes de una carrera determinada: "+estudianteRepository.findByCarreraCiudad(1,"Jiaoyuan"));
 
         System.out.println("[REPORTES]");
         List<ReporteDto> reportes = carreraRepository.generarReporte();
