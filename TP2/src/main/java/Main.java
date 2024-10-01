@@ -26,7 +26,6 @@ public class Main {
 
         // creo el helper y cargo las tables
         Helper helper = new Helper(em, carreraRepository, estudianteRepository, inscripcionRepository);
-        helper.dropTables();
         helper.populateTables();
 
 
@@ -44,7 +43,7 @@ public class Main {
 
         Carrera c = carreraRepository.findById(11);
         if (c == null) {
-            System.out.println("No se encontró la carrera con ID 11.");
+            System.out.println("No se encontró la carrera con ese ID.");
         } else {
             System.out.println("Estudiantes de una carrera determinada: " + estudianteRepository.findByCarreraCiudad(c, "Melekeok Village"));
         }

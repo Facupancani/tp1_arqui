@@ -43,13 +43,13 @@ public class Helper {
             em.getTransaction().begin();
 
             // Elimina la tabla Inscripcion primero (si depende de Estudiante o Carrera)
-            em.createNativeQuery("DROP TABLE IF EXISTS Inscripcion CASCADE").executeUpdate();
+            em.createNativeQuery("DROP TABLE Inscripcion").executeUpdate();
 
             // Elimina la tabla Estudiante
-            em.createNativeQuery("DROP TABLE IF EXISTS Estudiante CASCADE").executeUpdate();
+            em.createNativeQuery("DROP TABLE Estudiante").executeUpdate();
 
             // Elimina la tabla Carrera
-            em.createNativeQuery("DROP TABLE IF EXISTS Carrera CASCADE").executeUpdate();
+            em.createNativeQuery("DROP TABLE Carrera").executeUpdate();
 
             em.getTransaction().commit();
             System.out.println("Tablas eliminadas exitosamente.");
