@@ -13,6 +13,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import org.w3c.dom.ls.LSOutput;
 import repositories.CarreraRepository;
 import repositories.EstudianteRepository;
 import repositories.InscripcionRepository;
@@ -32,7 +33,12 @@ public class Helper {
         this.inscripcionRepository = inscripcionRepository;
     }
 
-    public void populateTables() {
+    public void populateTables(){
+        this.populateCarrerasEstudiantes();
+        this.populateInscripciones();
+    }
+
+    private void populateCarrerasEstudiantes() {
 
         try {
 
@@ -62,19 +68,6 @@ public class Helper {
                 ));
             }
 
-            CSVParser parserInscripciones = CSVFormat.DEFAULT.withHeader().parse(new FileReader("src/main/resources/estudianteCarrera.csv"));
-            for (CSVRecord row : parserInscripciones) {
-                // Inscripcion(int id, Estudiante estudiante, Carrera carrera, int anioInscripcion, int anioGraduacion, int antiguedad)
-                this.inscripcionRepository.insert(new Inscripcion(
-                        Integer.parseInt(row.get("id")),
-                        estudianteRepository.findById(Integer.parseInt(row.get("id_estudiante"))),
-                        carreraRepository.findById(Integer.parseInt(row.get("id_carrera"))),
-                        Integer.parseInt(row.get("inscripcion")),
-                        Integer.parseInt(row.get("graduacion")),
-                        Integer.parseInt(row.get("antiguedad"))
-                ));
-            }
-
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -82,6 +75,24 @@ public class Helper {
 
     }
 
+    private void populateInscripciones() {
+        try {
+            CSVParser parserInscripciones = CSVFormat.DEFAULT.withHeader().parse(new FileReader("src/main/resources/estudianteCarrera.csv"));
+            for (CSVRecord row : parserInscripciones) {
+                // Inscripcion(int id, Estudiante estudiante, Carrera carrera, int anioInscripcion, int anioGraduacion, int antiguedad)
+                this.inscripcionRepository.insert(new Inscripcion(
+                        Integer.parseInt(row.get("id")),
+                        estudianteRepository.findByNroDocumento(Integer.parseInt(row.get("id_estudiante"))),
+                        carreraRepository.findById(Integer.parseInt(row.get("id_carrera"))),
+                        Integer.parseInt(row.get("inscripcion")),
+                        Integer.parseInt(row.get("graduacion")),
+                        Integer.parseInt(row.get("antiguedad"))
+                ));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

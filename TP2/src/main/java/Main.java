@@ -3,6 +3,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import dto.ReporteDto;
+import entities.Carrera;
 import helper.Helper;
 import repositories.CarreraRepository;
 import repositories.EstudianteRepository;
@@ -27,6 +28,7 @@ public class Main {
         Helper helper = new Helper(em, carreraRepository, estudianteRepository, inscripcionRepository);
         helper.populateTables();
 
+        /*
         System.out.println("\n========================================================\n");
         System.out.println("Estudiante repo:" + estudianteRepository.findAll());
         System.out.println("Carrera repo:" + carreraRepository.findAll());
@@ -38,16 +40,19 @@ public class Main {
         System.out.println("\n========================================================\n\n");
         System.out.println("Carreras con Estudiantes inscriptos: "+carreraRepository.findCarrerasConInscriptos());
         System.out.println("\n========================================================\n\n");
-
+     */
         //unico metodo q no anda
-        System.out.println("Estudiantes de una carrera determinada: "+estudianteRepository.findByCarreraCiudad(15,"Jiaoyuan"));
+        Carrera c = carreraRepository.findById(11);
+        System.out.println("Estudiantes de una carrera determinada: "+estudianteRepository.findByCarreraCiudad(c,"Melekeok"));
 
-        System.out.println("[REPORTES]");
+/*
+
+        System.out.println("\n\n============================== [REPORTES] ==============================");
         List<ReporteDto> reportes = carreraRepository.generarReporte();
         for(ReporteDto reporte : reportes){
             System.out.println(reporte);
         }
-
+*/
         
         // cierro las conexiones a los entities managers
         em.close();

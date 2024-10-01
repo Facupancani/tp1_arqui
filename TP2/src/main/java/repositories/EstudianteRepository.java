@@ -23,7 +23,7 @@ public class EstudianteRepository implements Repository<Estudiante> {
     public void insert(Estudiante obj) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        try {
+        /*try {
             if (!(obj instanceof Estudiante)) {
                 em.persist(obj);
             } else {
@@ -34,7 +34,16 @@ public class EstudianteRepository implements Repository<Estudiante> {
             transaction.rollback();
             System.out.println("Error al insertar Estudiante: " + e.getMessage());
             throw e;
+        }*/
+
+        try{
+            em.persist(obj);
+            transaction.commit();
+        }catch (PersistenceException e){
+            transaction.rollback();
+            throw e;
         }
+
     }
 
     @Override
@@ -63,10 +72,25 @@ public class EstudianteRepository implements Repository<Estudiante> {
     // ej 2d)
     // recuperar un estudiante, en base a su número de libreta universitaria.
     public Estudiante findByNroLibreta(int nroLibreta) {
-        String query = "SELECT e FROM Estudiante e WHERE e.nroLibreta = :nroLibreta";
-        Query q = em.createQuery(query, Estudiante.class);
-        q.setParameter("nroLibreta", nroLibreta);
-        return (Estudiante) q.getSingleResult();
+        try{
+            return em.createQuery("SELECT e FROM Estudiante e WHERE e.nroLibreta = :nroLibreta", Estudiante.class)
+                    .setParameter("nroLibreta", nroLibreta)
+                    .getSingleResult();
+        }catch (PersistenceException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
+    public Estudiante findByNroDocumento(int nroDocumento) throws PersistenceException {
+        try{
+            return em.createQuery("SELECT e FROM Estudiante e WHERE e.nroDocumento = :nroDocumento", Estudiante.class)
+            .setParameter("nroDocumento", nroDocumento)
+            .getSingleResult();
+        }catch (PersistenceException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     // ej 2e)
@@ -80,11 +104,18 @@ public class EstudianteRepository implements Repository<Estudiante> {
 
     // ej 2g)
     // recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.
-    public List<Estudiante> findByCarreraCiudad(int idCarrera, String ciudad){
-        String query = "SELECT e FROM Estudiante e JOIN Inscripcion i ON i.estudiante.nroDocumento = e.nroDocumento WHERE i.carrera.idCarrera = :idCarrera AND e.ciudadResidencia = :ciudadResidencia";
+    public List<Estudiante> findByCarreraCiudad(Carrera carrera, String ciudad){
+        /*String query = "SELECT e FROM Estudiante e " +
+                "JOIN eInscripcion i " +
+                "WHERE i.carrera.idCarrera = :idCarrera AND e.ciudadResidencia = :ciudadResidencia";*/
+
+        String query = "SELECT e FROM Inscripcion i " +
+                "JOIN i.estudiante e " +
+                "WHERE i.carrera = :carrera AND e.ciudadResidencia = :ciudad";
+
         Query q = em.createQuery(query, Estudiante.class);
-        q.setParameter("idCarrera", idCarrera);
-        q.setParameter("ciudadResidencia", ciudad);
+        q.setParameter("carrera", carrera);
+        q.setParameter("ciudad", ciudad);
         return q.getResultList();
     }
 

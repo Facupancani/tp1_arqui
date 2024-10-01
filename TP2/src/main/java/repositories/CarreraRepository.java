@@ -1,5 +1,6 @@
 package repositories;
 
+import dto.CarreraConInscriptosDto;
 import dto.ReporteDto;
 import entities.Carrera;
 import entities.Estudiante;
@@ -24,7 +25,7 @@ public class CarreraRepository implements Repository<Carrera> {
     public void insert(Carrera obj) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        try {
+        /*try {
             if (!(obj instanceof Carrera)) {
                 em.persist(obj);
             } else {
@@ -35,7 +36,17 @@ public class CarreraRepository implements Repository<Carrera> {
             transaction.rollback();
             System.out.println("Error al insertar Carrera: " + e.getMessage());
             throw e;
+        }*/
+
+
+        try{
+            em.persist(obj);
+            transaction.commit();
+        }catch (PersistenceException e){
+            transaction.rollback();
+            throw e;
         }
+
     }
 
 
@@ -62,10 +73,23 @@ public class CarreraRepository implements Repository<Carrera> {
 
     // ej 2f)
     // recuperar las carreras con estudiantes inscriptos, y ordenar por cantidad de inscriptos.
-    public List<Carrera> findCarrerasConInscriptos(){
-        String query = "SELECT c FROM Carrera c WHERE c.inscripciones.size > 0 ORDER BY c.inscripciones.size DESC";
+    public List<CarreraConInscriptosDto> findCarrerasConInscriptos(){
+        List<CarreraConInscriptosDto> carreras = new ArrayList<>();
+
+        String query = "SELECT c.idCarrera, c.nombre, SIZE(c.inscripciones) FROM Carrera c WHERE SIZE(c.inscripciones) > 0 ORDER BY SIZE(c.inscripciones) DESC";
         Query q = em.createQuery(query);
-        return q.getResultList();
+        List<Object[]> resultados = q.getResultList();
+
+        for(Object[] row : resultados){
+            // CarreraConInscriptosDto(int idCarrera, int inscriptos, String nombreCarrera)
+            carreras.add(new CarreraConInscriptosDto(
+                    ((Number) row[0]).intValue(),
+                    (String) row[1],
+                    ((Number) row[2]).intValue()
+            ));
+        }
+
+        return carreras;
     }
 
     // ej 3)
@@ -89,7 +113,12 @@ public class CarreraRepository implements Repository<Carrera> {
         List<Object[]> resultados = q.getResultList();
         for(Object[] row : resultados){
             // String nombreCarrera, int anioInscripcion, int inscriptos, int egresados)
-            reportes.add(new ReporteDto((String) row[0], ((Number) row[1]).intValue(), ((Number) row[2]).intValue(), ((Number) row[3]).intValue()));
+            reportes.add(new ReporteDto(
+                    (String) row[0],
+                    ((Number) row[1]).intValue(),
+                    ((Number) row[2]).intValue(),
+                    ((Number) row[3]).intValue()
+            ));
         }
 
         return reportes;

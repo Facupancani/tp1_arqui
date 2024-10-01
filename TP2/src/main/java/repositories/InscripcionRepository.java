@@ -23,7 +23,7 @@ public class InscripcionRepository implements Repository<Inscripcion> {
     public void insert(Inscripcion obj) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        try {
+        /*try {
             if (!(obj instanceof Inscripcion)) {
                 em.persist(obj);
             } else {
@@ -34,7 +34,16 @@ public class InscripcionRepository implements Repository<Inscripcion> {
             transaction.rollback();
             System.out.println("Error al insertar Inscripcion: " + e.getMessage());
             throw e;
+        }*/
+
+        try{
+            em.persist(obj);
+            transaction.commit();
+        }catch (PersistenceException e){
+            transaction.rollback();
+            throw e;
         }
+
     }
 
     @Override
