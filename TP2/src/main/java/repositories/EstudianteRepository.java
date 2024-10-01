@@ -16,6 +16,8 @@ public class EstudianteRepository implements Repository<Estudiante> {
         this.em = em;
     }
 
+    // ej 2a)
+    // dar de alta un estudiante
     @Override
     public void insert(Estudiante obj) {
         EntityTransaction transaction = em.getTransaction();
@@ -45,19 +47,43 @@ public class EstudianteRepository implements Repository<Estudiante> {
         return em.find(Estudiante.class, id);
     }
 
+    // ej 2c)
+    // recuperar todos los estudiantes, y especificar algún criterio de ordenamiento simple
     public List<Estudiante> findAll() {
-        String query = "SELECT e FROM Estudiante e";
-        Query q = em.createQuery(query);
+        String query = "SELECT e FROM Estudiante e ORDER BY e.apellido ASC";
+        Query q = em.createQuery(query, Estudiante.class);
         return q.getResultList();
     }
 
+    // ej 2d)
+    // recuperar un estudiante, en base a su número de libreta universitaria.
+    public Estudiante findByNroLibreta(int nroLibreta) {
+        String query = "SELECT e FROM Estudiante e WHERE e.nroLibreta = :nroLibreta";
+        Query q = em.createQuery(query, Estudiante.class);
+        q.setParameter("nroLibreta", nroLibreta);
+        return (Estudiante) q.getSingleResult();
+    }
+
+    // ej 2e)
+    // recuperar todos los estudiantes, en base a su género.
+    public List<Estudiante> findByGenero(String genero){
+        String query = "SELECT e FROM Estudiante e WHERE e.genero = :genero";
+        Query q = em.createQuery(query, Estudiante.class);
+        q.setParameter("genero", genero);
+        return q.getResultList();
+    }
+
+    // ej 2g)
+    // recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.
     public List<Estudiante> findByCarreraCiudad(int idCarrera, String ciudad){
         String query = "SELECT e FROM Estudiante e JOIN Inscripcion i ON i.estudiante.nroLibreta = e.nroLibreta WHERE i.carrera.idCarrera = :idCarrera AND e.ciudadResidencia = :ciudadResidencia";
-        Query q = em.createQuery(query);
+        Query q = em.createQuery(query, Estudiante.class);
         q.setParameter("idCarrera", idCarrera);
         q.setParameter("ciudadResidencia", ciudad);
         return q.getResultList();
     }
+
+
 
 
 }

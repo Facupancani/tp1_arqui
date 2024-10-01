@@ -17,6 +17,8 @@ public class InscripcionRepository implements Repository<Inscripcion> {
         this.em = em;
     }
 
+    // ej 2b)
+    // matricular un estudiante en una carrera
     @Override
     public void insert(Inscripcion obj) {
         EntityTransaction transaction = em.getTransaction();
@@ -51,4 +53,5 @@ public class InscripcionRepository implements Repository<Inscripcion> {
     public Inscripcion findById(int id) {
         return em.find(Inscripcion.class, id);
     }
+
 }

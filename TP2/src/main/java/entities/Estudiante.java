@@ -8,6 +8,7 @@ import java.util.List;
 public class Estudiante {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int nroDocumento;
 
     @Column
@@ -28,7 +29,7 @@ public class Estudiante {
     @Column
     private int nroLibreta;
 
-    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Inscripcion> inscripciones;
 
     public Estudiante() {
