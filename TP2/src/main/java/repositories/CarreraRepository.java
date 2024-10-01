@@ -25,14 +25,19 @@ public class CarreraRepository implements Repository<Carrera> {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            em.merge(obj);
+            if (!(obj instanceof Carrera)) {
+                em.persist(obj);
+            } else {
+                em.merge(obj);
+            }
             transaction.commit();
         } catch (PersistenceException e) {
             transaction.rollback();
-            System.out.println("Error al insertar Carrera." + e.getMessage());
+            System.out.println("Error al insertar Carrera: " + e.getMessage());
             throw e;
         }
     }
+
 
     @Override
     public void update(Carrera obj) {

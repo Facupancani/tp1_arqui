@@ -24,11 +24,15 @@ public class InscripcionRepository implements Repository<Inscripcion> {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            em.merge(obj);
+            if (!(obj instanceof Inscripcion)) {
+                em.persist(obj);
+            } else {
+                em.merge(obj);
+            }
             transaction.commit();
         } catch (PersistenceException e) {
             transaction.rollback();
-            System.out.println("Error al insertar la inscripcion." + e.getMessage());
+            System.out.println("Error al insertar Inscripcion: " + e.getMessage());
             throw e;
         }
     }

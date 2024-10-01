@@ -1,5 +1,6 @@
 package repositories;
 
+import entities.Carrera;
 import entities.Estudiante;
 
 import javax.persistence.EntityManager;
@@ -23,11 +24,15 @@ public class EstudianteRepository implements Repository<Estudiante> {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         try {
-            em.merge(obj);
+            if (!(obj instanceof Estudiante)) {
+                em.persist(obj);
+            } else {
+                em.merge(obj);
+            }
             transaction.commit();
         } catch (PersistenceException e) {
             transaction.rollback();
-            System.out.println("Error al insertar estudiante." + e.getMessage());
+            System.out.println("Error al insertar Estudiante: " + e.getMessage());
             throw e;
         }
     }
@@ -76,7 +81,7 @@ public class EstudianteRepository implements Repository<Estudiante> {
     // ej 2g)
     // recuperar los estudiantes de una determinada carrera, filtrado por ciudad de residencia.
     public List<Estudiante> findByCarreraCiudad(int idCarrera, String ciudad){
-        String query = "SELECT e FROM Estudiante e JOIN Inscripcion i ON i.estudiante.nroLibreta = e.nroLibreta WHERE i.carrera.idCarrera = :idCarrera AND e.ciudadResidencia = :ciudadResidencia";
+        String query = "SELECT e FROM Estudiante e JOIN Inscripcion i ON i.estudiante.nroDocumento = e.nroDocumento WHERE i.carrera.idCarrera = :idCarrera AND e.ciudadResidencia = :ciudadResidencia";
         Query q = em.createQuery(query, Estudiante.class);
         q.setParameter("idCarrera", idCarrera);
         q.setParameter("ciudadResidencia", ciudad);

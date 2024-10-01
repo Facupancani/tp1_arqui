@@ -38,7 +38,9 @@ public class Main {
         System.out.println("\n========================================================\n\n");
         System.out.println("Carreras con Estudiantes inscriptos: "+carreraRepository.findCarrerasConInscriptos());
         System.out.println("\n========================================================\n\n");
-        System.out.println("Estudiantes de una carrera determinada: "+estudianteRepository.findByCarreraCiudad(1,"Jiaoyuan"));
+
+        //unico metodo q no anda
+        System.out.println("Estudiantes de una carrera determinada: "+estudianteRepository.findByCarreraCiudad(15,"Jiaoyuan"));
 
         System.out.println("[REPORTES]");
         List<ReporteDto> reportes = carreraRepository.generarReporte();
