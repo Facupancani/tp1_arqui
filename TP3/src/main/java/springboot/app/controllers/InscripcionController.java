@@ -1,18 +1,18 @@
-package springboot.controllers;
+package springboot.app.controllers;
 
-import springboot.entities.Inscripcion;
+import springboot.app.entities.Inscripcion;
+import springboot.app.servicio.InscripcionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springboot.services.InscripcionService;
 
 @RestController
 @RequestMapping("/inscripciones")
 public class InscripcionController {
 
     @Autowired
-    private InscripcionService inscripcionService;
+    private InscripcionServicio inscripcionService;
 
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody Inscripcion inscripcion) {

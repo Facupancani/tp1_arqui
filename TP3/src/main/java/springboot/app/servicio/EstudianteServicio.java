@@ -1,15 +1,15 @@
-package springboot.services;
+package springboot.app.servicio;
 
-import springboot.entities.Estudiante;
-import springboot.repositories.EstudianteRepository;
+import springboot.app.entities.Estudiante;
+import springboot.app.repositories.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Service("EstudianteService")
-public class EstudianteService implements springboot.services.Service<Estudiante> {
+@Service
+public class EstudianteServicio implements Servicio<Estudiante> {
 
     @Autowired
     private EstudianteRepository estudianteRepository;
@@ -35,7 +35,7 @@ public class EstudianteService implements springboot.services.Service<Estudiante
         return estudianteRepository.findByCarreraCiudad(carreraId, ciudad);
     }
 
-    public Estudiante findByNroDocumento(int nroDocumento){
+    public Estudiante findByNroDocumento(int nroDocumento) throws Exception{
         return estudianteRepository.findByNroDocumento(nroDocumento);
     }
 

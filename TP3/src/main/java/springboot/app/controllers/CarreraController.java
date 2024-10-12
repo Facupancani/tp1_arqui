@@ -1,18 +1,18 @@
-package springboot.controllers;
+package springboot.app.controllers;
 
-import springboot.entities.Carrera;
+import springboot.app.entities.Carrera;
+import springboot.app.servicio.CarreraServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springboot.services.CarreraService;
 
 @RestController
 @RequestMapping("/carreras")
 public class CarreraController {
 
     @Autowired
-    private CarreraService carreraService;
+    private CarreraServicio carreraService;
 
     @GetMapping("")
     public ResponseEntity<?> getAll() {
@@ -46,7 +46,7 @@ public class CarreraController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(carreraService.findById(id));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"carreraId '"+id+"' no encontrada\"");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"carreraId '"+id+"' no encontrada\"}");
         }
     }
 
@@ -73,7 +73,7 @@ public class CarreraController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(carreraService.delete(id));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"carreraId '"+id+"' no encontrada\"");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"carreraId '"+id+"' no encontrada\"}");
         }
     }
 

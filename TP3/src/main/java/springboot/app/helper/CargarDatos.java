@@ -1,14 +1,14 @@
-package springboot.helper;
-
-import springboot.entities.Carrera;
-import springboot.entities.Estudiante;
-import springboot.entities.Inscripcion;
-import springboot.repositories.CarreraRepository;
-import springboot.repositories.EstudianteRepository;
-import springboot.repositories.InscripcionRepository;
+package springboot.app.helper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import springboot.app.entities.Carrera;
+import springboot.app.entities.Estudiante;
+import springboot.app.entities.Inscripcion;
+import springboot.app.repositories.CarreraRepository;
+import springboot.app.repositories.EstudianteRepository;
+import springboot.app.repositories.InscripcionRepository;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;

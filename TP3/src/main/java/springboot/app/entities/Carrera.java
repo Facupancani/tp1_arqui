@@ -1,5 +1,6 @@
-package springboot.entities;
+package springboot.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 public class Carrera {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private int idCarrera;
 
     @Column
@@ -20,6 +21,7 @@ public class Carrera {
     int duracion;
 
     @OneToMany(mappedBy = "carrera", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "carrera-inscripcion")
     private List<Inscripcion> inscripciones;
 
     public Carrera () {

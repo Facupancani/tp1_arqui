@@ -1,18 +1,18 @@
-package springboot.services;
+package springboot.app.servicio;
 
-import springboot.dto.CarreraConInscriptosDto;
-import springboot.dto.ReporteDto;
+import springboot.app.entities.Carrera;
+import springboot.app.dto.CarreraConInscriptosDto;
+import springboot.app.dto.ReporteDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springboot.entities.Carrera;
-import springboot.repositories.CarreraRepository;
+import springboot.app.repositories.CarreraRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-
-@Service("CarreraService")
-public class CarreraService implements springboot.services.Service<Carrera> {
+@Service
+public class CarreraServicio implements Servicio<Carrera> {
 
     @Autowired
     private CarreraRepository carreraRepository;
@@ -23,11 +23,25 @@ public class CarreraService implements springboot.services.Service<Carrera> {
     }
 
     public List<CarreraConInscriptosDto> findCarrerasConInscriptos() throws Exception {
-        return carreraRepository.findCarrerasConInscriptos();
+        List<Object[]> carreras = carreraRepository.findCarrerasConInscriptos();
+        return carreras.stream()
+                .map(carrera -> new CarreraConInscriptosDto(
+                        (String) carrera[0],                       // String carrera
+                        ((int) carrera[1])                          // Long inscriptos
+                ))
+                .collect(Collectors.toList());
     }
 
     public List<ReporteDto> generarReporte() throws Exception {
-        return carreraRepository.generarReporte();
+        List<Object[]> reportes = carreraRepository.generarReporte();
+        return reportes.stream()
+                .map(reporte -> new ReporteDto(
+                        (String) reporte[0],                        // String nombreCarrera
+                        ((int) reporte[1]),                         // Long anioInscripcion
+                        ((Long) reporte[2]),                         // Long inscriptos
+                        ((Long) reporte[3])                          // Long egresados
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override

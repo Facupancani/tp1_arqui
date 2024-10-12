@@ -1,13 +1,13 @@
 package springboot.app;
 
-import springboot.helper.CargarDatos;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springboot.app.helper.CargarDatos;
 import java.io.IOException;
 
-@SpringBootApplication(scanBasePackages = "springboot")
+@SpringBootApplication
 public class Main {
 
     @Autowired
@@ -17,9 +17,9 @@ public class Main {
         SpringApplication.run(Main.class, args);
     }
 
-    /*@PostConstruct
+    @PostConstruct
     public void init() throws IOException {
         cargarDatos.cargarDB();
-    }*/
+    }
 
 }

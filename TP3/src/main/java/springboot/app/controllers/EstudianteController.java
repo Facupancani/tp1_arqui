@@ -1,19 +1,19 @@
-package springboot.controllers;
+package springboot.app.controllers;
 
-import springboot.entities.Estudiante;
+import org.springframework.http.MediaType;
+import springboot.app.entities.Estudiante;
+import springboot.app.servicio.EstudianteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springboot.services.EstudianteService;
-
 
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {
 
     @Autowired
-    private EstudianteService estudianteService;
+    private EstudianteServicio estudianteService;
 
     @GetMapping("")
     public ResponseEntity<?> getAll() {
@@ -24,12 +24,12 @@ public class EstudianteController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable int id) {
+    @GetMapping("/{dni}")
+    public ResponseEntity<?> getByNroDocumento(@PathVariable int dni) {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByNroDocumento(dni));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"estudianteId '"+id+"' no encontrada\"");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"nroDocumento '"+dni+"' no encontrado\"}");
         }
     }
 
@@ -38,29 +38,29 @@ public class EstudianteController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByNroLibreta(nroLibreta));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"nroLibreta '"+nroLibreta+"' no encontrada\"");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"nroLibreta '"+nroLibreta+"' no encontrada\"}");
         }
     }
 
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<?> getById(@PathVariable String genero) {
+    public ResponseEntity<?> getByGenero(@PathVariable String genero) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByGenero(genero));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"genero '"+genero+"' invalido\"");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"genero '"+genero+"' invalido\"}");
         }
     }
 
-    @GetMapping("/carrera/{carreraId}/ciudad/{ciuadd}")
-    public ResponseEntity<?> getByCarreraCiudad(@PathVariable int carreraId, String ciudad) {
+    @GetMapping("/carrera/{carreraId}/ciudad/{ciudad}")
+    public ResponseEntity<?> getByCarreraCiudad(@PathVariable int carreraId, @PathVariable String ciudad) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.findByCarreraCiudad(carreraId, ciudad));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"sin resultados\"");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"sin resultados\"}");
         }
     }
 
-    @PostMapping("")
+    @PostMapping(value="", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@RequestBody Estudiante estudiante) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.save(estudiante));
@@ -83,7 +83,7 @@ public class EstudianteController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(estudianteService.delete(id));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"estudianteId '"+id+"' no encontrada\"");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"estudianteId '"+id+"' no encontrada\"}");
         }
     }
 

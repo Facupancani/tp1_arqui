@@ -1,31 +1,36 @@
-package springboot.entities;
+package springboot.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import jakarta.persistence.*;
+
+import java.util.Optional;
 
 @Entity
 @Data
 public class Inscripcion {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private int id;
 
     @ManyToOne
+    @JsonBackReference(value = "estudiante-inscripcion")
     @JoinColumn(name="nroDocumento")
     private Estudiante estudiante;
 
     @ManyToOne
+    @JsonBackReference(value = "carrera-inscripcion")
     @JoinColumn(name="idCarrera")
     private Carrera carrera;
 
     @Column
     private int anioInscripcion;
 
-    @Column()
+    @Column
     private int anioGraduacion;
 
-    @Column()
+    @Column
     private int antiguedad;
 
     public Inscripcion () {}
