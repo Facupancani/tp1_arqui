@@ -1,12 +1,12 @@
 ----------------------------------------------------------------
-Tue Oct 01 19:56:44 ART 2024:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0192-4a4c-de6a-00001ef183c8 
-on database directory C:\Users\tomyt\IdeaProjects\tp1_arqui\TP2\myDatabase with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@76ed5528 
-Loaded from file:/C:/Users/tomyt/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+Tue Oct 01 20:33:23 ART 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0192-4a6e-6c23-00000eeb3ef0 
+on database directory I:\Users\harold\Desktop\ARQUITECTURAS WEB\TP1-Arqui\TP2\myDatabase with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@76ed5528 
+Loaded from file:/C:/Users/harold/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
-java.runtime.version=22.0.2+9-70
-user.dir=C:\Users\tomyt\IdeaProjects\tp1_arqui\TP2
-os.name=Windows 11
+java.runtime.version=22.0.1+8-16
+user.dir=I:\Users\harold\Desktop\ARQUITECTURAS WEB\TP1-Arqui\TP2
+os.name=Windows 10
 os.arch=amd64
 os.version=10.0
 derby.system.home=null

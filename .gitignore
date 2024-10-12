@@ -7,6 +7,11 @@ TP1/.idea/
 TP1/mysql_data/
 
 TP2/.idea/
+TP2/mysql_data/
+TP2/myDatabase/
+
+TP3/.idea/
+TP3/mysql_data/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
