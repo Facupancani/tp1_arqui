@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.monopatin</groupId>
-    <artifactId>MonopatinService</artifactId>
+    <artifactId>TarifaService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>MonopatinService</name>
-    <description>MonopatinService</description>
+    <name>TarifaService</name>
+    <description>TarifaService</description>
     <url/>
     <licenses>
         <license/>
