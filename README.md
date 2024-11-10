@@ -1,6 +1,6 @@
 # TPE ARQUITECTURAS WEB 2024
 
-#####Integrantes
+## Integrantes
 - Dante Tomas Tourn
 - Santiago Bugnón
 - Facundo Pancani
@@ -22,8 +22,8 @@
 |**DELETE**| /paradas/{id_parada} | Elimina una parada
 
 #### [Ejemplos]
-#####Agregar un monopatin
-```
+##### Agregar un monopatin
+```json
 {
   "modelo": "Samsung X3200",
   "kilometraje": 7250,
@@ -37,18 +37,19 @@
   }
 }
 ```
-#####Agregar una parada
-```
+##### Agregar una parada
+```json
 {
   "nombre":"Parque Central 2",
   "ubicacion":{
     "latitud": -39.42358,
     "longitud": -58.63456
   }
-}```
-
-#####Listar monopatines
+}
 ```
+
+##### Listar monopatines
+```json
 [
   {
     "idMonopatin": 1,
