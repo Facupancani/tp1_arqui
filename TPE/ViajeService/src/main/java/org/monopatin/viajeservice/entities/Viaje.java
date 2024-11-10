@@ -24,6 +24,7 @@ public class Viaje {
 
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
+    private LocalDateTime fechaHoraTiempoPausaMaximoExcedido = null;
     private Double kilometrosRecorridos = 0.0;
     private Boolean enCurso = true;
     private Double costo = 0.0;

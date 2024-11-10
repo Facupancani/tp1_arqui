@@ -1,13 +1,19 @@
 package org.monopatin.viajeservice.services;
 
+import org.monopatin.viajeservice.dto.MonopatinDTO;
+import org.monopatin.viajeservice.dto.TarifaDTO;
 import org.monopatin.viajeservice.entities.Viaje;
 import org.monopatin.viajeservice.repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ViajeService {
@@ -20,6 +26,7 @@ public class ViajeService {
 
     private static final String CUENTA_SERVICE_URL = "http://localhost:8002/cuentas";
     private static final String MONOPATIN_SERVICE_URL = "http://localhost:8001/monopatines";
+    private static final String TARIFA_SERVICE_URL = "http://localhost:8004/tarifa";
 
     public Viaje iniciarViaje(Long idCuenta, Long idUsuario, Long idMonopatin, Long idParadaInicio){
 
@@ -69,9 +76,33 @@ public class ViajeService {
     }
 
     private Double calcularCosto(Viaje viaje){
+
+        TarifaDTO tarifa = restTemplate.getForObject(TARIFA_SERVICE_URL, TarifaDTO.class);
+
+        // Si se excedio el tiempo de pausa maximo, se comienza a cobrar una tarifa extra
+        if(viaje.getFechaHoraTiempoPausaMaximoExcedido() != null){
+            Long duracionDesdeInicioHastaTiempoPausaExcedido = ChronoUnit.MINUTES.between(viaje.getFechaHoraInicio(), viaje.getFechaHoraTiempoPausaMaximoExcedido());
+            Long duracionDesdeTiempoPausaExcedidoHastaFin = ChronoUnit.MINUTES.between(viaje.getFechaHoraTiempoPausaMaximoExcedido(), viaje.getFechaHoraFin());
+
+            Double tarifaSimple = duracionDesdeInicioHastaTiempoPausaExcedido * tarifa.getTarifaPorMinuto();
+            Double tarifaExtra = duracionDesdeTiempoPausaExcedidoHastaFin * tarifa.getTarifaExtra();
+
+            return tarifaSimple + tarifaExtra;
+        }
+
         Long duracion = ChronoUnit.MINUTES.between(viaje.getFechaHoraInicio(), viaje.getFechaHoraFin());
-        Double tarifaPorMinuto = 1.0; // TODO: OBTENER TARIFA DE TarifaService
-        return duracion*tarifaPorMinuto;
+        return duracion*tarifa.getTarifaPorMinuto();
+    }
+
+    public List<MonopatinDTO> obtenerMonopatinesConViajes(int anio, Long cantViajes){
+        List<Object[]> resultados = viajeRepository.findMonopatinesConViajes(anio, cantViajes);
+
+        return resultados.stream()
+                .map(resultado -> new MonopatinDTO(
+                        (Long) resultado[0],
+                        (Long) resultado[1])
+                )
+                .collect(Collectors.toList());
     }
 
 }

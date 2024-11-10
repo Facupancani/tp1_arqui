@@ -1,11 +1,14 @@
 package org.monopatin.viajeservice.controllers;
 
+import org.monopatin.viajeservice.dto.MonopatinDTO;
 import org.monopatin.viajeservice.entities.Viaje;
 import org.monopatin.viajeservice.services.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/viajes")
@@ -31,6 +34,14 @@ public class ViajeController {
             @RequestParam Double kilometrosRecorridos) {
         Viaje viaje = viajeService.finalizarViaje(idViaje, idParadaFin, kilometrosRecorridos);
         return new ResponseEntity<>(viaje, HttpStatus.OK);
+    }
+
+    @GetMapping("/monopatines/mas-viajes")
+    public ResponseEntity<List<MonopatinDTO>> obtenerMonopatinesConMasViajes(
+            @RequestParam int anio,
+            @RequestParam long numViajes) {
+        List<MonopatinDTO> resultado = viajeService.obtenerMonopatinesConViajes(anio, numViajes);
+        return new ResponseEntity<>(resultado, HttpStatus.OK);
     }
 
 }

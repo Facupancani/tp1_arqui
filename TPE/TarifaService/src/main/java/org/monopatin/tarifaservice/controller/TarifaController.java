@@ -2,38 +2,32 @@ package org.monopatin.tarifaservice.controller;
 
 import org.monopatin.tarifaservice.model.Tarifa;
 import org.monopatin.tarifaservice.service.TarifaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping
+@RequestMapping("/tarifa")
 public class TarifaController {
 
+    @Autowired
     private final TarifaService tarifaService;
 
     public TarifaController(TarifaService tarifaService){
         this.tarifaService=tarifaService;
     }
 
-    @GetMapping
-    public List<Tarifa> getAllTarifas(){
-        return tarifaService.getAllTarifas();
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<Tarifa> getTarifaById(@PathVariable int id){
-        return tarifaService.getTarifaById(id).map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+    @GetMapping()
+    public ResponseEntity<Tarifa> getTarifa(){
+        Tarifa tarifa = tarifaService.getTarifa();
+        return new ResponseEntity<>(tarifa, HttpStatus.OK);
     }
 
     @PostMapping
-    public Tarifa createTarifa(@RequestBody Tarifa tarifa){
-        return tarifaService.saveTarifa(tarifa);
+    public ResponseEntity<Tarifa> actualizarTarifa(@RequestBody Tarifa tarifa){
+        Tarifa tarifaActualizada = tarifaService.actualizarTarifa(tarifa);
+        return ResponseEntity.status(HttpStatus.OK).body(tarifaActualizada);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTarifa(@PathVariable int id){
-        tarifaService.deleteTarifa(id);
-        return ResponseEntity.noContent().build();
-    }
 }
