@@ -1,57 +1,29 @@
 version: '3.8'
 
 services:
-  monopatin_db:
+
+  monopatin_mysql_db:
     image: mysql:latest
-    container_name: monopatin-db
+    container_name: monopatin_mysql_db
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
       MYSQL_ROOT_PASSWORD: "pleaseDontHackMe!123"
-      MYSQL_DATABASE: "arquidb_monopatin"
       MYSQL_ROOT_HOST: "%"
     ports:
       - "3307:3306"
     volumes:
-      - ./monopatin_data:/var/lib/mysql
+      - ./monopatin_mysql_data:/var/lib/mysql
     restart: always
 
-  cuenta_db:
-    image: mysql:latest
-    container_name: cuenta-db
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
-      MYSQL_ROOT_PASSWORD: "pleaseDontHackMe!123"
-      MYSQL_DATABASE: "arquidb_cuenta"
-      MYSQL_ROOT_HOST: "%"
-    ports:
-      - "3308:3306"
-    volumes:
-      - ./cuenta_data:/var/lib/mysql
-    restart: always
-
-  tarifa_db:
-    image: mysql:latest
-    container_name: tarifa-db
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
-      MYSQL_ROOT_PASSWORD: "pleaseDontHackMe!123"
-      MYSQL_DATABASE: "arquidb_tarifa"
-      MYSQL_ROOT_HOST: "%"
-    ports:
-      - "3309:3306"
-    volumes:
-      - ./tarifa_data:/var/lib/mysql
-    restart: always
-
-  reporte_db:
+  monopatin_mongo_db:
     image: mongo:4.4.18
-    container_name: reporte-db
+    container_name: monopatin_mongo_db
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: pleaseDontHackMe!123
     ports:
       - "27018:27017"
     volumes:
-      - ./reporte_data:/data/db
+      - ./monopatin_mongo_data:/data/db
     restart: always
 
