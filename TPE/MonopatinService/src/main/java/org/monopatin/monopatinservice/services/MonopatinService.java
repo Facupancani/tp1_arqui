@@ -86,6 +86,10 @@ public class MonopatinService {
         monopatinRepository.deleteById(idMonopatin);
     }
 
+    public List<Monopatin> getAll(){
+        return monopatinRepository.findAll();
+    }
+
 
 
 }

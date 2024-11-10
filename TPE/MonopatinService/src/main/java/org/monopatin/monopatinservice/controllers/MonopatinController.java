@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/monopatines")
 public class MonopatinController {
@@ -80,6 +82,14 @@ public class MonopatinController {
         }
     }
 
-
+    @GetMapping
+    public ResponseEntity<?> listarMonopatines(){
+        try{
+            List<Monopatin> monopatines = monopatinService.getAll();
+            return ResponseEntity.status(HttpStatus.OK).body(monopatines);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 }

@@ -11,7 +11,10 @@ public class Monopatin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMonopatin;
 
+    private String modelo;
     private Double kilometraje = 0.0;
+    private Long tiempoDeUso = 0L;
+    private Long tiempoEnPausa = 0L;
     private String estado = "disponible"; // "disponible", "en_uso", "en_mantenimiento"
     private Boolean enMantenimiento = false;
 
