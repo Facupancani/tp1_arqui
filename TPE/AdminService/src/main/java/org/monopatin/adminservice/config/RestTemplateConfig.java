@@ -1,4 +1,4 @@
-package org.monopatin.reporteservice.config;
+package org.monopatin.adminservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

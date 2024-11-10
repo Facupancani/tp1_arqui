@@ -51,6 +51,12 @@ public class CuentaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/{idCuenta}/saldo")
+    public ResponseEntity<Double> obtenerSaldo(@PathVariable Long idCuenta) {
+            Double saldo = cuentaService.obtenerSaldo(idCuenta);
+            return new ResponseEntity<>(saldo, HttpStatus.OK);
+    }
+
     @PatchMapping("/{idCuenta}/saldo")
     public ResponseEntity<Cuenta> actualizarSaldo(@PathVariable Long idCuenta, @RequestParam Double monto) {
         try {

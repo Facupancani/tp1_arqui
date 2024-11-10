@@ -56,6 +56,12 @@ public class CuentaService {
         return cuenta;
     }
 
+    public Double obtenerSaldo(Long idCuenta){
+        return cuentaRepository.findById(idCuenta)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"))
+                .getSaldo();
+    }
+
     public Cuenta actualizarSaldo(Long idCuenta, Double monto){
         return cuentaRepository.findById(idCuenta)
                 .map(cuenta ->{

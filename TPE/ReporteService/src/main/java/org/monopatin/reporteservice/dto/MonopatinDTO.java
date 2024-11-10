@@ -10,12 +10,4 @@ public class MonopatinDTO {
     private Long tiempoDeUso;
     private Long tiempoEnPausa;
 
-    public Long getTiempoConPausas(){
-        return this.tiempoDeUso + this.tiempoEnPausa;
-    }
-
-    public Long getTiempoSinPausas(){
-        return this.tiempoDeUso - this.tiempoEnPausa;
-    }
-
 }

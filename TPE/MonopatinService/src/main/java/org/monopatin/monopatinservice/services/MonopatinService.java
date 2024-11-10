@@ -86,10 +86,34 @@ public class MonopatinService {
         monopatinRepository.deleteById(idMonopatin);
     }
 
+    public boolean monopatinDisponible(Long idMonopatin){
+        Monopatin monopatin = monopatinRepository.findById(idMonopatin)
+                .orElseThrow(() -> new RuntimeException("Monopatin no encontrado"));
+        return (!monopatin.getEnMantenimiento()) && (monopatin.getEstado().equals("disponible"));
+    }
+
     public List<Monopatin> getAll(){
         return monopatinRepository.findAll();
     }
 
+    public Monopatin activarMonopatin(Long idMonopatin){
+        Monopatin monopatin = monopatinRepository.findById(idMonopatin)
+                .orElseThrow(() -> new RuntimeException("Monopatin no encontrado"));
+        if(monopatin.getEnMantenimiento()){
+            throw new RuntimeException("No se puede activar un monopatin en mantenimiento");
+        }
+        monopatin.setEstado("en_uso");
+        return monopatinRepository.save(monopatin);
+    }
 
+    public Monopatin deactivarMonopatin(Long idMonopatin){
+        Monopatin monopatin = monopatinRepository.findById(idMonopatin)
+                .orElseThrow(() -> new RuntimeException("Monopatin no encontrado"));
+        if(monopatin.getEnMantenimiento()){
+            throw new RuntimeException("No se puede desactivar un monopatin en mantenimiento");
+        }
+        monopatin.setEstado("disponible");
+        return monopatinRepository.save(monopatin);
+    }
 
 }

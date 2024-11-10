@@ -92,4 +92,31 @@ public class MonopatinController {
         }
     }
 
+    @GetMapping("/{idMonopatin}/disponible")
+    public ResponseEntity<Boolean> monopatinDisponible(@PathVariable Long idMonopatin){
+        Boolean disponible = monopatinService.monopatinDisponible(idMonopatin);
+        return new ResponseEntity<>(disponible, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{idMonopatin}/activar")
+    public ResponseEntity<?> activarMonopatin(@PathVariable Long idMonopatin){
+        try{
+            Monopatin monopatin = monopatinService.activarMonopatin(idMonopatin);
+            return ResponseEntity.status(HttpStatus.OK).body(monopatin);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{idMonopatin}/desactivar")
+    public ResponseEntity<?> desactivarMonopatin(@PathVariable Long idMonopatin){
+        try{
+            Monopatin monopatin = monopatinService.deactivarMonopatin(idMonopatin);
+            return ResponseEntity.status(HttpStatus.OK).body(monopatin);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
 }

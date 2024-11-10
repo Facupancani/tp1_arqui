@@ -1,6 +1,7 @@
 package org.monopatin.reporteservice.services;
 
 import org.monopatin.reporteservice.dto.MonopatinDTO;
+import org.monopatin.reporteservice.dto.MonopatinReporteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,45 +21,28 @@ public class ReporteService {
     private static final String MONOPATIN_SERVICE_URL = "http://localhost:8001/monopatines";
 
     /* =========================================================== */
-    /* 11) Generar reporte de uso de monopatines por kilómetros
+    /* Generar reporte de uso de monopatines
     /* =========================================================== */
-    public List<MonopatinDTO> generarReportePorKilometros(){
+    public List<MonopatinReporteDTO> generarReporteDeUso(boolean incluirTiempoPausa){
         // Get all monopatines from MonopatinService REST
         ResponseEntity<MonopatinDTO[]> response = restTemplate.getForEntity(MONOPATIN_SERVICE_URL, MonopatinDTO[].class);
         MonopatinDTO[] monopatines = response.getBody();
 
-        // Retorno una lista de monopatines ordenados por Kilometraje
+        if (monopatines == null) {
+            throw new RuntimeException("No hay monopatines");
+        }
+
         return Arrays.stream(monopatines)
-                .sorted(Comparator.comparingDouble(MonopatinDTO::getKilometraje).reversed())
-                .collect(Collectors.toList());
-    }
-
-    /* =========================================================== */
-    /* 12) Generar reporte de uso de monopatines por tiempo con pausas
-    /* =========================================================== */
-    public List<MonopatinDTO> generarReportePorTiempoConPausas(){
-        // Get all monopatines from MonopatinService REST
-        ResponseEntity<MonopatinDTO[]> response = restTemplate.getForEntity(MONOPATIN_SERVICE_URL, MonopatinDTO[].class);
-        MonopatinDTO[] monopatines = response.getBody();
-
-        // Retorno una lista de monopatines ordenados por Tiempo de uso CON pausas
-        return Arrays.stream(monopatines)
-                .sorted(Comparator.comparingLong(MonopatinDTO::getTiempoConPausas).reversed())
-                .collect(Collectors.toList());
-
-    }
-
-    /* =========================================================== */
-    /* 13) Generar reporte de uso de monopatines por tiempo sin pausas
-    /* =========================================================== */
-    public List<MonopatinDTO> generarReportePorTiempoSinPausas(){
-        // Get all monopatines from MonopatinService REST
-        ResponseEntity<MonopatinDTO[]> response = restTemplate.getForEntity(MONOPATIN_SERVICE_URL, MonopatinDTO[].class);
-        MonopatinDTO[] monopatines = response.getBody();
-
-        // Retorno una lista de monopatines ordenados por Tiempo de uso SIN pausas
-        return Arrays.stream(monopatines)
-                .sorted(Comparator.comparingLong(MonopatinDTO::getTiempoSinPausas).reversed())
+                .map(monopatin ->{
+                    Long tiempoDeUso = incluirTiempoPausa ? (monopatin.getTiempoDeUso() + monopatin.getTiempoEnPausa()) : monopatin.getTiempoDeUso();
+                    MonopatinReporteDTO reporte = new MonopatinReporteDTO(
+                            monopatin.getIdMonopatin(),
+                            monopatin.getKilometraje(),
+                            tiempoDeUso
+                    );
+                    return reporte;
+                })
+                .sorted((m1, m2) -> Double.compare(m2.getKilometraje(), m1.getKilometraje()))
                 .collect(Collectors.toList());
 
     }
