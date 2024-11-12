@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MonopatinRepository extends JpaRepository<Monopatin, Long> {
 
-    @Query("SELECT COUNT(m) FROM Monopatin m WHERE m.estado = 'en_uso'")
+    @Query("SELECT COUNT(m) FROM Monopatin m WHERE m.estado = 'disponible'")
     Long countMonopatinesEnOperacion();
 
     @Query("SELECT COUNT(m) FROM Monopatin m WHERE m.estado = 'en_mantenimiento'")

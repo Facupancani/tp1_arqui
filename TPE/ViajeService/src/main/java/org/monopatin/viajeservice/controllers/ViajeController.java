@@ -54,8 +54,11 @@ public class ViajeController {
         return viajeService.getViajes();
     }
 
-    @GetMapping
-    public Double getFacturadoEntre(@RequestBody int anio, int mesInicio, int mesFin) {
+    @GetMapping("/facturado-entre")
+    public Double getFacturadoEntre(
+            @RequestParam int anio,
+            @RequestParam int mesInicio,
+            @RequestParam int mesFin) {
         return viajeService.getViajesEntre(anio, mesInicio, mesFin);
     }
 
