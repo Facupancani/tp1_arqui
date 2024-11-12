@@ -21,6 +21,9 @@ public class Ubicacion {
     }
 
     public Ubicacion(Double latitud, Double longitud) {
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
+
 
 }

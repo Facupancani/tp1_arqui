@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MonopatinService {
@@ -130,7 +131,17 @@ public class MonopatinService {
     }
 
     public List<Monopatin> obtenerMonopatinesCercanos(double latitud, double longitud, double radio) {
-        return monopatinRepository.findMonopatinesCercanos(latitud, longitud, radio);
+        List<Monopatin> todosDisponibles = monopatinRepository.findAllDisponibles();
+
+        return todosDisponibles.stream()
+                .filter(m -> {
+                    Double lat = m.getUbicacion().getLatitud();
+                    Double lon = m.getUbicacion().getLongitud();
+                    // Cálculo de la distancia euclidiana
+                    double distancia = Math.sqrt(Math.pow(lat - latitud, 2) + Math.pow(lon - longitud, 2));
+                    return distancia < radio;
+                })
+                .collect(Collectors.toList());
     }
 
 }

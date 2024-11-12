@@ -1,9 +1,13 @@
+
 ENDPOINTS CONSIGNAS:
 
 a) Como encargado de mantenimiento, quiero poder generar un reporte de uso de monopatines por
    kilómetros para establecer si un monopatín requiere mantenimiento. Este reporte debe permitir
    configurar si se incluyen (o no) los tiempos de pausa.
-    Endpoint: GET /monopatines/reporte
+    Endpoint: GET /monopatines/cercanos?latitud= (Latitud) & longitud= (long) & radio= (radio)
+
+    Postman
+    ej:http://localhost:8003/monopatines/cercanos?latitud=40&longitud=-74&radio=0.01
 
     Parámetros:
     -incluirTiempoPausa (booleano, opcional, valor por defecto: false):
