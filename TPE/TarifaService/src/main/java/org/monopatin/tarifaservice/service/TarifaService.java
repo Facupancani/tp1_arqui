@@ -5,6 +5,8 @@ import org.monopatin.tarifaservice.repository.TarifaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 
 @Service
 public class TarifaService {
@@ -16,13 +18,17 @@ public class TarifaService {
         return tarifaRepository.findLatestTarifa();
     }
 
-    public Tarifa actualizarTarifa(Tarifa nuevaTarifa){
-        Tarifa tarifa = tarifaRepository.findLatestTarifa();
-        if(tarifa == null){
-            tarifa = new Tarifa();
+    // Actualizar tarifa
+    public Tarifa actualizarTarifa(Tarifa tarifa, LocalDate fechaInicioVigencia) {
+        // Si hay una tarifa activa, actualizamos la fecha de fin
+        Tarifa tarifaAnterior = tarifaRepository.findTopByFechaInicioVigenciaLessThanEqualOrderByFechaInicioVigenciaDesc(LocalDate.now());
+        if (tarifaAnterior != null && tarifaAnterior.getFechaFinVigencia() == null) {
+            tarifaAnterior.setFechaFinVigencia(LocalDate.now());  // Se termina la vigencia de la tarifa anterior
+            tarifaRepository.save(tarifaAnterior);
         }
-        tarifa.setTarifaPorMinuto(nuevaTarifa.getTarifaPorMinuto());
-        tarifa.setTarifaExtra(nuevaTarifa.getTarifaExtra());
+
+        // Establecemos la nueva tarifa con la fecha de inicio de vigencia
+        tarifa.setFechaInicioVigencia(fechaInicioVigencia);
         return tarifaRepository.save(tarifa);
     }
 

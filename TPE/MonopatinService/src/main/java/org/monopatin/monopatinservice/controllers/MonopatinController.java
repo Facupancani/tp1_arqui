@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/monopatines")
@@ -119,4 +120,18 @@ public class MonopatinController {
     }
 
 
+    @GetMapping("/estado")
+    public ResponseEntity<Map<String, Long>> obtenerEstadoMonopatines() {
+        Map<String, Long> estadoMonopatines = monopatinService.obtenerEstadoMonopatines();
+        return new ResponseEntity<>(estadoMonopatines, HttpStatus.OK);
+    }
+
+    @GetMapping("/cercanos")
+    public ResponseEntity<List<Monopatin>> obtenerMonopatinesCercanos(
+            @RequestParam double latitud,
+            @RequestParam double longitud,
+            @RequestParam(defaultValue = "0.01") double radio) {  // Radio en grados aproximado a 1 km
+        List<Monopatin> monopatines = monopatinService.obtenerMonopatinesCercanos(latitud, longitud, radio);
+        return ResponseEntity.ok(monopatines);
+    }
 }

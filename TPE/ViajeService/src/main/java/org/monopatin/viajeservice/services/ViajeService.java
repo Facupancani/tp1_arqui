@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -103,6 +104,15 @@ public class ViajeService {
                         (Long) resultado[1])
                 )
                 .collect(Collectors.toList());
+    }
+
+    public List<Viaje> getViajes(){
+        List<Viaje> viajes = viajeRepository.findAll();
+        return viajes;
+    }
+
+    public Double getViajesEntre(int anio, int mesInicio, int mesFin) {
+        return viajeRepository.findTotalFacturadoByAnioAndMesRange(anio, mesInicio, mesFin);
     }
 
 }

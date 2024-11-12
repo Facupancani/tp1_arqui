@@ -23,28 +23,28 @@ public class ReporteService {
     /* =========================================================== */
     /* Generar reporte de uso de monopatines
     /* =========================================================== */
-    public List<MonopatinReporteDTO> generarReporteDeUso(boolean incluirTiempoPausa){
-        // Get all monopatines from MonopatinService REST
-        ResponseEntity<MonopatinDTO[]> response = restTemplate.getForEntity(MONOPATIN_SERVICE_URL, MonopatinDTO[].class);
-        MonopatinDTO[] monopatines = response.getBody();
+        public List<MonopatinReporteDTO> generarReporteDeUso(boolean incluirTiempoPausa){
+            // Get all monopatines from MonopatinService REST
+            ResponseEntity<MonopatinDTO[]> response = restTemplate.getForEntity(MONOPATIN_SERVICE_URL, MonopatinDTO[].class);
+            MonopatinDTO[] monopatines = response.getBody();
 
-        if (monopatines == null) {
-            throw new RuntimeException("No hay monopatines");
+            if (monopatines == null) {
+                throw new RuntimeException("No hay monopatines");
+            }
+
+            return Arrays.stream(monopatines)
+                    .map(monopatin ->{
+                        Long tiempoDeUso = incluirTiempoPausa ? (monopatin.getTiempoDeUso() + monopatin.getTiempoEnPausa()) : monopatin.getTiempoDeUso();
+                        MonopatinReporteDTO reporte = new MonopatinReporteDTO(
+                                monopatin.getIdMonopatin(),
+                                monopatin.getKilometraje(),
+                                tiempoDeUso
+                        );
+                        return reporte;
+                    })
+                    .sorted((m1, m2) -> Double.compare(m2.getKilometraje(), m1.getKilometraje()))
+                    .collect(Collectors.toList());
+
         }
-
-        return Arrays.stream(monopatines)
-                .map(monopatin ->{
-                    Long tiempoDeUso = incluirTiempoPausa ? (monopatin.getTiempoDeUso() + monopatin.getTiempoEnPausa()) : monopatin.getTiempoDeUso();
-                    MonopatinReporteDTO reporte = new MonopatinReporteDTO(
-                            monopatin.getIdMonopatin(),
-                            monopatin.getKilometraje(),
-                            tiempoDeUso
-                    );
-                    return reporte;
-                })
-                .sorted((m1, m2) -> Double.compare(m2.getKilometraje(), m1.getKilometraje()))
-                .collect(Collectors.toList());
-
-    }
 
 }

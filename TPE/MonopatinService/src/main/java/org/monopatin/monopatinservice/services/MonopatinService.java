@@ -8,7 +8,9 @@ import org.monopatin.monopatinservice.repositories.ParadaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -114,6 +116,21 @@ public class MonopatinService {
         }
         monopatin.setEstado("disponible");
         return monopatinRepository.save(monopatin);
+    }
+
+    public Map<String, Long> obtenerEstadoMonopatines() {
+        Long enOperacion = monopatinRepository.countMonopatinesEnOperacion();
+        Long enMantenimiento = monopatinRepository.countMonopatinesEnMantenimiento();
+
+        Map<String, Long> resultado = new HashMap<>();
+        resultado.put("enOperacion", enOperacion);
+        resultado.put("enMantenimiento", enMantenimiento);
+
+        return resultado;
+    }
+
+    public List<Monopatin> obtenerMonopatinesCercanos(double latitud, double longitud, double radio) {
+        return monopatinRepository.findMonopatinesCercanos(latitud, longitud, radio);
     }
 
 }

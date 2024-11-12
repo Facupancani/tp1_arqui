@@ -17,6 +17,12 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+
+    /* ======================================= */
+    /*  b. "Como administrador quiero poder anular cuentas para inhabilitar el uso momentáneo de la misma."
+    /* ======================================= */
+    /*  Anular cuenta
+    /* ======================================= */
     @PatchMapping("/anular-cuenta/{idCuenta}")
     public ResponseEntity<String> anularCuenta(@PathVariable Long idCuenta) {
         try {
@@ -27,6 +33,9 @@ public class AdminController {
         }
     }
 
+    /* ======================================= */
+    /*  Reactivar cuenta
+    /* ======================================= */
     @PatchMapping("/reactivar-cuenta/{idCuenta}")
     public ResponseEntity<String> reactivarCuenta(@PathVariable Long idCuenta) {
         try {
@@ -37,6 +46,11 @@ public class AdminController {
         }
     }
 
+    /* ======================================= */
+    /*  c. "Como administrador quiero consultar los monopatines con más de X viajes en un cierto año."
+    /* ======================================= */
+    /*  Patines con mas viajes en año
+    /* ======================================= */
     @GetMapping("/monopatines/mas-viajes")
     public ResponseEntity<List<MonopatinDTO>> obtenerMonopatinesConMasViajes(
             @RequestParam int anio,

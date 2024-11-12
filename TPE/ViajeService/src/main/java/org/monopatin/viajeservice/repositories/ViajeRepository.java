@@ -18,4 +18,9 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
             "HAVING COUNT(v) > :cantViajes")
     List<Object[]> findMonopatinesConViajes(@Param("anio") int anio, @Param("cantViajes") Long cantViajes);
 
+    @Query("SELECT SUM(v.costo) FROM Viaje v WHERE YEAR(v.fechaHoraInicio) = :anio AND MONTH(v.fechaHoraInicio) BETWEEN :mesInicio AND :mesFin")
+    Double findTotalFacturadoByAnioAndMesRange(
+            @Param("anio") int anio,
+            @Param("mesInicio") int mesInicio,
+            @Param("mesFin") int mesFin);
 }

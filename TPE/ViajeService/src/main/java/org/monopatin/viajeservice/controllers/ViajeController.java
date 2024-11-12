@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.monopatin.viajeservice.repositories.ViajeRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/viajes")
 public class ViajeController {
+
+    @Autowired
+    private ViajeRepository viajeRepo;
 
     @Autowired
     private ViajeService viajeService;
@@ -42,6 +47,16 @@ public class ViajeController {
             @RequestParam long numViajes) {
         List<MonopatinDTO> resultado = viajeService.obtenerMonopatinesConViajes(anio, numViajes);
         return new ResponseEntity<>(resultado, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public List<Viaje> getAllViajes(){
+        return viajeService.getViajes();
+    }
+
+    @GetMapping
+    public Double getFacturadoEntre(@RequestBody int anio, int mesInicio, int mesFin) {
+        return viajeService.getViajesEntre(anio, mesInicio, mesFin);
     }
 
 }
