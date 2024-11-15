@@ -4,17 +4,22 @@ ENDPOINTS CONSIGNAS:
 a) Como encargado de mantenimiento, quiero poder generar un reporte de uso de monopatines por
    kilómetros para establecer si un monopatín requiere mantenimiento. Este reporte debe permitir
    configurar si se incluyen (o no) los tiempos de pausa.
-    Endpoint: GET 
+    Endpoint: GET /monopatines/reporte-uso
 
     Parámetros:
-    -incluirTiempoPausa (booleano, opcional, valor por defecto: false):
-        Indica si el reporte debe incluir el tiempo de pausa de cada monopatín.
+     incluirTiempoPausa (booleano, opcional, valor por defecto: false):
+        Indica si el reporte debe incluir el tiempo de pausa acumulado de cada monopatín
+        en el cálculo de tiempo de uso.
 
-    Funcionalidad: Este endpoint permite al encargado de mantenimiento obtener un reporte
-       detallado sobre el uso de cada monopatín en función de los kilómetros recorridos, opcionalmente
-       incluyendo el tiempo de pausa en el cálculo. Llama al método
-       reporteService.generarReporteDeUso(incluirTiempoPausa), que procesa los datos de uso para determinar
-       qué monopatines podrían necesitar mantenimiento basándose en su kilometraje y tiempo de uso.
+    Postman:
+     ej: http://localhost:8003/monopatines/reporte-uso?incluirTiempoPausa=false
+    
+    Funcionalidad: Este endpoint permite obtener un reporte detallado sobre el uso de cada
+    monopatín en función de los kilómetros recorridos y el tiempo total de uso, con la opción
+    de incluir o excluir el tiempo en pausa. La información devuelta es útil para determinar qué 
+    monopatines podrían necesitar mantenimiento, basándose en su kilometraje y en el tiempo que han 
+    estado en uso (y en pausa, si se incluye).
+
 
 
 b) Como administrador, quiero poder anular cuentas para inhabilitar el uso momentáneo de la misma.
@@ -84,6 +89,15 @@ f) Como administrador, quiero hacer un ajuste de precios, y que a partir de cier
     -tarifaPorMinuto (double): Nueva tarifa por minuto a aplicar.
     -tarifaExtra (double): Nueva tarifa extra a aplicar.
     -fechaInicioVigencia (LocalDate): Fecha a partir de la cual las nuevas tarifas serán aplicadas. Esta fecha debe ser proporcionada en formato yyyy-MM-dd.
+
+    Postman
+     ej: http://localhost:8003/tarifa
+        body: {
+                "tarifaPorMinuto": 1.5,
+                "tarifaExtra": 2.0,
+                "fechaInicioVigencia": "2024-11-20"
+               }
+
 
     Funcionalidad:Este endpoint permite a los administradores actualizar las tarifas del sistema.
         A partir de la fecha de inicio de vigencia proporcionada, la nueva tarifa será habilitada.

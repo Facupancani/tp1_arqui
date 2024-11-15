@@ -1,5 +1,6 @@
 package org.monopatin.monopatinservice.controllers;
 
+import org.monopatin.monopatinservice.dto.ReporteUsoMonopatinDTO;
 import org.monopatin.monopatinservice.entities.Monopatin;
 import org.monopatin.monopatinservice.services.MonopatinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,17 @@ public class MonopatinController {
         Boolean disponible = monopatinService.monopatinDisponible(idMonopatin);
         return new ResponseEntity<>(disponible, HttpStatus.OK);
     }
+
+    @GetMapping("/reporte-uso")
+    public ResponseEntity<?> generarReporteDeUso(@RequestParam(defaultValue = "false") boolean incluirTiempoPausa) {
+        try {
+            List<ReporteUsoMonopatinDTO> reporte = monopatinService.generarReporteDeUso(incluirTiempoPausa);
+            return ResponseEntity.status(HttpStatus.OK).body(reporte);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 
     @PatchMapping("/{idMonopatin}/activar")
     public ResponseEntity<?> activarMonopatin(@PathVariable Long idMonopatin){

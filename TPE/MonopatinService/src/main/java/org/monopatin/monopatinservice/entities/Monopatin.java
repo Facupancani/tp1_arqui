@@ -26,5 +26,8 @@ public class Monopatin {
     @JoinColumn(name = "idParada")
     private Parada paradaActual;
 
+    public Long getIdMonopatin() {
+        return idMonopatin;
+    }
 }
 

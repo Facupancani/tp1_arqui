@@ -1,5 +1,6 @@
 package org.monopatin.monopatinservice.services;
 
+import org.monopatin.monopatinservice.dto.ReporteUsoMonopatinDTO;
 import org.monopatin.monopatinservice.entities.Monopatin;
 import org.monopatin.monopatinservice.entities.Parada;
 import org.monopatin.monopatinservice.entities.Ubicacion;
@@ -7,6 +8,7 @@ import org.monopatin.monopatinservice.repositories.MonopatinRepository;
 import org.monopatin.monopatinservice.repositories.ParadaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -129,6 +131,21 @@ public class MonopatinService {
 
         return resultado;
     }
+
+    public List<ReporteUsoMonopatinDTO> generarReporteDeUso(boolean incluirTiempoPausa) {
+        List<Monopatin> monopatines = monopatinRepository.findAll();
+
+        return monopatines.stream().map(monopatin -> {
+            double kilometrosRecorridos = monopatin.getKilometraje();
+            double tiempoDeUso = incluirTiempoPausa
+                    ? monopatin.getTiempoDeUso() + monopatin.getTiempoEnPausa()
+                    : monopatin.getTiempoDeUso();
+
+            // Crear un DTO con los datos necesarios
+            return new ReporteUsoMonopatinDTO(monopatin.getIdMonopatin(), kilometrosRecorridos, tiempoDeUso);
+        }).collect(Collectors.toList());
+    }
+
 
     public List<Monopatin> obtenerMonopatinesCercanos(double latitud, double longitud, double radio) {
         List<Monopatin> todosDisponibles = monopatinRepository.findAllDisponibles();

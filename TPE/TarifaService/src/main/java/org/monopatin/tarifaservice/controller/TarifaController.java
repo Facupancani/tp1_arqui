@@ -1,5 +1,6 @@
 package org.monopatin.tarifaservice.controller;
 
+import org.monopatin.tarifaservice.dto.TarifaRequestDTO;
 import org.monopatin.tarifaservice.model.Tarifa;
 import org.monopatin.tarifaservice.service.TarifaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,27 +15,30 @@ import java.time.LocalDate;
 @RequestMapping("/tarifa")
 public class TarifaController {
 
-    @Autowired
     private final TarifaService tarifaService;
 
-    public TarifaController(TarifaService tarifaService){
-        this.tarifaService=tarifaService;
+    @Autowired
+    public TarifaController(TarifaService tarifaService) {
+        this.tarifaService = tarifaService;
     }
 
     @GetMapping()
-    public ResponseEntity<Tarifa> getTarifa(){
+    public ResponseEntity<Tarifa> getTarifa() {
         Tarifa tarifa = tarifaService.getTarifa();
         return new ResponseEntity<>(tarifa, HttpStatus.OK);
     }
 
-
     @PostMapping
-    public ResponseEntity<Tarifa> actualizarTarifa(
-            @RequestBody Tarifa tarifa,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicioVigencia) {
+    public ResponseEntity<?> actualizarTarifa(
+            @RequestBody TarifaRequestDTO tarifaRequestDTO) {
 
-        Tarifa tarifaActualizada = tarifaService.actualizarTarifa(tarifa, fechaInicioVigencia);
+        // Validación: Fecha de inicio debe ser hoy o futura
+        if (tarifaRequestDTO.getFechaInicioVigencia().isBefore(LocalDate.now())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("La fecha de inicio de vigencia debe ser hoy o en el futuro.");
+        }
+
+        Tarifa tarifaActualizada = tarifaService.actualizarTarifa(tarifaRequestDTO);
         return ResponseEntity.status(HttpStatus.OK).body(tarifaActualizada);
     }
-
 }
