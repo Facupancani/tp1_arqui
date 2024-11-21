@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: API de Tarifas
+  description: API para gestionar tarifas en el sistema.
+  version: "1.0.0"
+
+paths:
+  /tarifa:
+    get:
+      summary: Obtener la ultima tarifa
+      description: Obtiene la tarifa actual en el sistema.
+      responses:
+        '200':
+          description: Tarifa actual obtenida con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+
+    post:
+      summary: Actualizar tarifa
+      description: Actualiza la tarifa en el sistema. La fecha de inicio de vigencia debe ser hoy o en el futuro.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarifaRequestDTO'
+      responses:
+        '200':
+          description: Tarifa actualizada con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+        '400':
+          description: Error de validación (fecha inválida).
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "La fecha de inicio de vigencia debe ser hoy o en el futuro."
+
+components:
+  schemas:
+    Tarifa:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        monto:
+          type: number
+          format: double
+          example: 150.50
+        fechaInicioVigencia:
+          type: string
+          format: date
+          example: "2024-11-01"
+
+    TarifaRequestDTO:
+      type: object
+      properties:
+        monto:
+          type: number
+          format: double
+          example: 200.00
+        fechaInicioVigencia:
+          type: string
+          format: date
+          example: "2024-12-01"

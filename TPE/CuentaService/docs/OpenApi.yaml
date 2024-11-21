@@ -1,0 +1,262 @@
+openapi: 3.0.0
+
+info:
+  title: cuentaService
+  description: Microservicio que maneja las cuentas y usuarios
+  version: 1.0.0
+
+paths:
+  /cuentas:
+    post:
+      summary: Crear una nueva cuenta
+      description: Crea una nueva cuenta en el sistema
+      requestBody:
+        description: Objeto cuenta a crear
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cuenta'
+      responses:
+        201:
+          description: "Cuenta creada exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuenta'
+        400:
+          description: "Error en la solicitud"
+
+    get:
+      summary: Obtener todas las cuentas
+      description: Obtiene todas las cuentas del sistema
+      responses:
+        200:
+          description: "Cuentas encontradas"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Cuenta'
+        500:
+          description: "Error en el servidor"
+
+  /cuentas/{idCuenta}:
+    get:
+      summary: Obtener cuenta por ID
+      description: Obtiene una cuenta específica por su ID
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta que se quiere obtener
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        200:
+          description: "Cuenta encontrada"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuenta'
+        404:
+          description: "Cuenta no encontrada"
+
+    put:
+      summary: Actualizar cuenta
+      description: Actualiza la información de una cuenta existente
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta que se desea actualizar
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        description: Objeto cuenta con los datos actualizados
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cuenta'
+      responses:
+        200:
+          description: "Cuenta actualizada exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuenta'
+        404:
+          description: "Cuenta no encontrada"
+
+    delete:
+      summary: Eliminar cuenta
+      description: Elimina una cuenta del sistema
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta que se desea eliminar
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        204:
+          description: "Cuenta eliminada exitosamente"
+        404:
+          description: "Cuenta no encontrada"
+
+  /cuentas/{idCuenta}/saldo:
+    get:
+      summary: Obtener saldo de una cuenta
+      description: Obtiene el saldo actual de una cuenta
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta para la que se desea obtener el saldo
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        200:
+          description: "Saldo encontrado"
+          content:
+            application/json:
+              schema:
+                type: "number"
+                format: "double"
+        404:
+          description: "Cuenta no encontrada"
+
+    patch:
+      summary: Actualizar saldo de una cuenta
+      description: Actualiza el saldo de una cuenta sumando un monto
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta cuyo saldo se desea actualizar
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: monto
+          in: query
+          required: true
+          description: Monto a sumar al saldo de la cuenta
+          schema:
+            type: "number"
+            format: "double"
+      responses:
+        200:
+          description: "Saldo actualizado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuenta'
+        404:
+          description: "Cuenta no encontrada"
+
+  /cuentas/{idCuenta}/desactivar:
+    patch:
+      summary: Desactivar una cuenta
+      description: Desactiva una cuenta temporalmente, inhabilitando su uso
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta que se desea desactivar
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        200:
+          description: "Cuenta desactivada exitosamente"
+        404:
+          description: "Cuenta no encontrada"
+
+  /cuentas/{idCuenta}/reactivar:
+    patch:
+      summary: Reactivar una cuenta
+      description: Reactiva una cuenta previamente desactivada
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta que se desea reactivar
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        200:
+          description: "Cuenta reactivada exitosamente"
+        404:
+          description: "Cuenta no encontrada"
+
+  /cuentas/vincular/{idCuenta}/usuarios/{idUsuario}:
+    post:
+      summary: Vincular un usuario a una cuenta
+      description: Vincula un usuario a una cuenta existente
+      parameters:
+        - name: idCuenta
+          in: path
+          required: true
+          description: El ID de la cuenta a la que se desea vincular el usuario
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: idUsuario
+          in: path
+          required: true
+          description: El ID del usuario que se desea vincular
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        200:
+          description: "Usuario vinculado exitosamente"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuenta'
+        404:
+          description: "Cuenta o Usuario no encontrado"
+
+components:
+  schemas:
+    Cuenta:
+      type: "object"
+      properties:
+        idCuenta:
+          type: "integer"
+          format: "int64"
+        nombreTitular:
+          type: "string"
+        email:
+          type: "string"
+        saldo:
+          type: "number"
+          format: "double"
+        fechaAlta:
+          type: "string"
+          format: "date"
+        activa:
+          type: "boolean"
+        usuarios:
+          type: "array"
+          items:
+            $ref: '#/components/schemas/Usuario'
+
+    Usuario:
+      type: "object"
+      properties:
+        idUsuario:
+          type: "integer"
+          format: "int64"
+        nombre:
+          type: "string"
+        email:
+          type: "string"

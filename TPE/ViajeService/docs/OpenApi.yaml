@@ -1,0 +1,220 @@
+openapi: 3.0.1
+info:
+  title: Viaje Service API
+  description: API para gestionar los viajes de monopatines eléctricos, incluyendo la creación, finalización y estadísticas de viajes.
+  version: 1.0.0
+  contact:
+    name: Equipo de Desarrollo
+    email: contacto@monopatin.com
+servers:
+  - url: http://localhost:8003/viajes
+    description: Servidor local de desarrollo
+
+paths:
+  /viajes/iniciar:
+    post:
+      summary: Inicia un nuevo viaje
+      operationId: iniciarViaje
+      parameters:
+        - name: idCuenta
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: ID de la cuenta del usuario.
+        - name: idUsuario
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: ID del usuario que realiza el viaje.
+        - name: idMonopatin
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: ID del monopatín que se va a utilizar.
+        - name: idParadaInicio
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: ID de la parada de inicio del viaje.
+      responses:
+        201:
+          description: Viaje iniciado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Viaje'
+        400:
+          description: Error, saldo insuficiente o monopatín no disponible
+        500:
+          description: Error del servidor al iniciar el viaje
+
+  /viajes/finalizar/{idViaje}:
+    post:
+      summary: Finaliza un viaje en curso
+      operationId: finalizarViaje
+      parameters:
+        - name: idViaje
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del viaje a finalizar.
+        - name: idParadaFin
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: ID de la parada de fin del viaje.
+        - name: kilometrosRecorridos
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+          description: Kilómetros recorridos en el viaje.
+      responses:
+        200:
+          description: Viaje finalizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Viaje'
+        400:
+          description: Error, viaje no encontrado o datos inválidos
+        500:
+          description: Error del servidor al finalizar el viaje
+
+  /viajes/monopatines/mas-viajes:
+    get:
+      summary: Obtiene los monopatines con más viajes en un año
+      operationId: obtenerMonopatinesConMasViajes
+      parameters:
+        - name: anio
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Año para el cual se consulta el número de viajes.
+        - name: numViajes
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Número mínimo de viajes para filtrar los monopatines.
+      responses:
+        200:
+          description: Lista de monopatines con más viajes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonopatinDTO'
+        400:
+          description: Error al consultar los monopatines con más viajes
+        500:
+          description: Error del servidor al obtener los monopatines
+
+  /viajes:
+    get:
+      summary: Obtiene todos los viajes
+      operationId: getAllViajes
+      responses:
+        200:
+          description: Lista de todos los viajes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Viaje'
+        500:
+          description: Error del servidor al obtener los viajes
+
+  /viajes/facturado-entre:
+    get:
+      summary: Obtiene el total facturado entre un rango de meses de un año
+      operationId: getFacturadoEntre
+      parameters:
+        - name: anio
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Año para el cual se consulta el total facturado.
+        - name: mesInicio
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Mes de inicio del rango.
+        - name: mesFin
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: Mes de fin del rango.
+      responses:
+        200:
+          description: Total facturado en el rango de meses
+          content:
+            application/json:
+              schema:
+                type: number
+                format: float
+        400:
+          description: Error al consultar el total facturado
+        500:
+          description: Error del servidor al obtener el total facturado
+
+components:
+  schemas:
+    Viaje:
+      type: object
+      properties:
+        idViaje:
+          type: integer
+        idCuenta:
+          type: integer
+        idUsuario:
+          type: integer
+        idMonopatin:
+          type: integer
+        fechaHoraInicio:
+          type: string
+          format: date-time
+        fechaHoraFin:
+          type: string
+          format: date-time
+        kilometrosRecorridos:
+          type: number
+          format: float
+        costo:
+          type: number
+          format: float
+        idParadaInicio:
+          type: integer
+        idParadaFin:
+          type: integer
+
+    MonopatinDTO:
+      type: object
+      properties:
+        idMonopatin:
+          type: integer
+        cantViajes:
+          type: integer
+
+    TarifaDTO:
+      type: object
+      properties:
+        tarifaPorMinuto:
+          type: number
+          format: float
+        tarifaExtra:
+          type: number
+          format: float

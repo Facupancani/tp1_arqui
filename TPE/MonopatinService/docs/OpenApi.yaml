@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: Monopatín Service API
+  description: API para la gestión de monopatines en un sistema de alquiler de monopatines eléctricos.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: Servidor local de desarrollo
+
+paths:
+  /monopatines/{idMonopatin}/finalizar-mantenimiento:
+    get:
+      summary: Finalizar mantenimiento de monopatín
+      parameters:
+        - name: idMonopatin
+          in: path
+          required: true
+          schema:
+            type: string  # or number, depending on your case
+      responses:
+        '200':
+          description: Mantenimiento finalizado
+
+  /monopatines/{idMonopatin}/parada/{idParada}:
+    get:
+      summary: Obtener información sobre una parada de monopatín
+      parameters:
+        - name: idMonopatin
+          in: path
+          required: true
+          schema:
+            type: string  # or number
+        - name: idParada
+          in: path
+          required: true
+          schema:
+            type: string  # or number
+      responses:
+        '200':
+          description: Detalles de la parada
+
+  /monopatines/{idMonopatin}/disponible:
+    get:
+      summary: Verificar si el monopatín está disponible
+      parameters:
+        - name: idMonopatin
+          in: path
+          required: true
+          schema:
+            type: string  # or number
+      responses:
+        '200':
+          description: Estado de disponibilidad del monopatín
+
+components:
+  schemas:
+    Monopatin:
+      type: object
+      properties:
+        idMonopatin:
+          type: integer
+          example: 1
+        modelo:
+          type: string
+          example: "Monopatin X"
+        kilometraje:
+          type: number
+          format: double
+          example: 100.5
+        tiempoDeUso:
+          type: integer
+          example: 3600
+        tiempoEnPausa:
+          type: integer
+          example: 600
+        estado:
+          type: string
+          example: "disponible"
+        enMantenimiento:
+          type: boolean
+          example: false
+        ubicacion:
+          type: object
+          properties:
+            latitud:
+              type: number
+              format: double
+              example: -38.016
+            longitud:
+              type: number
+              format: double
+              example: -57.516
+        paradaActual:
+          type: object
+          properties:
+            idParada:
+              type: integer
+              example: 1
+            nombre:
+              type: string
+              example: "Parada Central"
+
+    ReporteUsoMonopatinDTO:
+      type: object
+      properties:
+        idMonopatin:
+          type: integer
+          example: 1
+        kilometrosRecorridos:
+          type: number
+          format: double
+          example: 100.5
+        tiempoDeUso:
+          type: number
+          format: double
+          example: 3600
